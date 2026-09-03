@@ -1,0 +1,245 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─── Monochrome. No hue anywhere, contrast does all the work. ─── */
+:root {
+  --black: #000000;
+  --ink: #060606;
+  --ink-2: #0c0c0c;
+  --ink-3: #131313;
+  --ink-4: #1c1c1c;
+  --edge: #262626;
+  --edge-hi: #3a3a3a;
+  --grey: #6f6f6f;
+  --grey-hi: #8f8f8f;
+  --silver: #b4b4b4;
+  --white: #fafafa;
+
+  --radius: 2px;
+  --background: var(--ink);
+  --foreground: var(--white);
+  --card: var(--ink-2);
+  --card-foreground: var(--white);
+  --popover: var(--ink-2);
+  --popover-foreground: var(--white);
+  --primary: var(--white);
+  --primary-foreground: var(--ink);
+  --secondary: var(--ink-3);
+  --secondary-foreground: var(--white);
+  --muted-foreground: var(--silver);
+  --accent: var(--ink-4);
+  --accent-foreground: var(--white);
+  --destructive: var(--silver);
+  --border: var(--edge);
+  --input: var(--edge);
+  --ring: var(--grey-hi);
+}
+
+@theme inline {
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 3px;
+  --radius-xl: 4px;
+
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
+  --color-edge: var(--edge);
+  --color-edge-hi: var(--edge-hi);
+  --color-grey: var(--grey);
+  --color-grey-hi: var(--grey-hi);
+  --color-silver: var(--silver);
+  --color-white: var(--white);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--ink-3);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Strong and solid for headings, Times for reading, mono for labels. */
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Tinos", "Times New Roman", Times, serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--ink);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    line-height: 1.72;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--white);
+    color: var(--ink);
+  }
+
+  ::-webkit-scrollbar {
+    width: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--edge);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--edge-hi);
+  }
+}
+
+@layer components {
+  .slug {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+  }
+
+  .display-tight {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+  }
+
+  .prose-serif p {
+    max-width: 70ch;
+  }
+
+  /* Heavier grain than usual, this is the only texture in the system. */
+  .grain::before {
+    content: "";
+    position: fixed;
+    inset: -60%;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.075;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain-shift 6s steps(5) infinite;
+  }
+
+  .vignette::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse at 50% 35%,
+      transparent 42%,
+      rgba(0, 0, 0, 0.72) 100%
+    );
+  }
+
+  .glow {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(130px);
+    pointer-events: none;
+    z-index: 0;
+    background: rgba(255, 255, 255, 0.045);
+  }
+
+  .hairline {
+    height: 1px;
+    background: linear-gradient(to right, var(--edge), transparent);
+  }
+
+  .link-underline {
+    position: relative;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .link-underline:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* Faint dotted rule used to separate blocks */
+  .dotted {
+    background-image: linear-gradient(
+      to right,
+      var(--edge) 0 2px,
+      transparent 2px 6px
+    );
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+    height: 1px;
+  }
+}
+
+@keyframes grain-shift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-3%, 2%);
+  }
+  40% {
+    transform: translate(2%, -3%);
+  }
+  60% {
+    transform: translate(-2%, -2%);
+  }
+  80% {
+    transform: translate(3%, 1%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .grain::before {
+    animation: none;
+  }
+}
