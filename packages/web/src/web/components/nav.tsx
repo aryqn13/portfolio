@@ -9,8 +9,19 @@ const EASE = [0.22, 0.61, 0.36, 1] as const;
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  // The bar is transparent over the top of a page and becomes an opaque
+  // surface the moment anything scrolls under it. Without this the wordmark
+  // collides with body text on a phone, where the column runs full width.
+  const [scrolled, setScrolled] = useState(false);
   const [location] = useLocation();
   const { profile, socials } = useContent();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Close on route change and on escape.
   useEffect(() => setOpen(false), [location]);
@@ -34,15 +45,25 @@ export function Nav() {
     <>
       <header className="fixed inset-x-0 top-0 z-50">
         <div
-          className="mx-auto flex max-w-[1180px] items-center justify-between px-5 py-4 sm:px-8"
-          style={{
-            background:
-              "linear-gradient(to bottom, rgba(6,6,6,0.92), rgba(6,6,6,0))",
-          }}
+          className="mx-auto flex max-w-[1180px] items-center justify-between px-5 py-4 transition-colors duration-300 sm:px-8"
+          style={
+            scrolled
+              ? {
+                  background: "rgba(6,6,6,0.86)",
+                  backdropFilter: "blur(14px)",
+                  WebkitBackdropFilter: "blur(14px)",
+                  borderBottom: "1px solid var(--edge)",
+                }
+              : {
+                  background:
+                    "linear-gradient(to bottom, rgba(6,6,6,0.92), rgba(6,6,6,0))",
+                  borderBottom: "1px solid transparent",
+                }
+          }
         >
           <Link
             to="/"
-            className="display text-lg tracking-tight text-white transition-opacity hover:opacity-70"
+            className="display -my-2 inline-flex min-h-10 items-center py-2 text-lg tracking-tight text-white transition-opacity hover:opacity-70"
           >
             Aryan
           </Link>
@@ -179,7 +200,7 @@ export function Nav() {
                           aria-label={s.label}
                           title={s.label}
                           style={{ color: "var(--grey)" }}
-                          className="transition-colors duration-300 hover:!text-white"
+                          className="-m-2.5 inline-flex h-10 w-10 items-center justify-center transition-colors duration-300 hover:!text-white"
                         >
                           <Icon size={17} />
                         </a>
@@ -188,7 +209,7 @@ export function Nav() {
                 </div>
                 <a
                   href={`mailto:${profile.email}`}
-                  className="slug link-underline"
+                  className="slug link-underline -my-2 inline-flex min-h-10 items-center py-2 normal-case"
                   style={{ color: "var(--silver)" }}
                 >
                   {profile.email}

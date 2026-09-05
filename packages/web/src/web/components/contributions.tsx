@@ -95,7 +95,7 @@ export function Contributions() {
             href={`https://github.com/${profile.githubUser}`}
             target="_blank"
             rel="noreferrer"
-            className="slug link-underline inline-flex items-center gap-2"
+            className="slug link-underline -my-2 inline-flex min-h-10 items-center gap-2 py-2 normal-case"
             style={{ color: "var(--silver)" }}
           >
             <SiGithub size={13} /> {profile.githubUser} <ArrowUpRight size={11} />
@@ -121,7 +121,7 @@ export function Contributions() {
                     return (
                       <div key={wi} className="w-[13px] shrink-0">
                         <span
-                          className="mb-1 block h-3 font-mono text-[9px] tracking-wider"
+                          className="mb-1 block h-3 font-mono text-[11px] tracking-wider"
                           style={{ color: "var(--grey)" }}
                         >
                           {label ? label.label : ""}

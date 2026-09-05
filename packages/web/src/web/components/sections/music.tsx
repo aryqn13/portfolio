@@ -60,7 +60,7 @@ export function Music() {
                   >
                     {card.label}
                   </h3>
-                  <p className="slug mt-2">{card.handle}</p>
+                  <p className="slug mt-2 normal-case">{card.handle}</p>
                   <p
                     className="mt-4 max-w-[36ch] text-[1.02rem] leading-[1.65]"
                     style={{ color: "var(--silver)" }}

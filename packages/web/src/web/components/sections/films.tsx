@@ -148,7 +148,7 @@ export function Films() {
                 href={profileUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="link-underline"
+                className="link-underline -my-2 inline-flex min-h-10 items-center py-2"
                 style={{ color: "var(--white)" }}
               >
                 See the profile directly
@@ -298,7 +298,7 @@ export function Films() {
                 href={profileUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="slug link-underline mt-8 inline-flex items-center gap-2.5"
+                className="slug link-underline mt-8 inline-flex min-h-10 items-center gap-2.5 py-2 normal-case"
                 style={{ color: "var(--silver)" }}
               >
                 <SiLetterboxd size={15} /> letterboxd.com/

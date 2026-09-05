@@ -30,6 +30,7 @@ import {
   inputStyle,
 } from "../components/studio/fields";
 import type { FieldDef } from "../components/studio/fields";
+import { PhotoEditor } from "../components/studio/photo-editor";
 
 type BlockKey =
   | "profile"
@@ -50,7 +51,14 @@ type BlockKey =
   | "guestbookIntro"
   | "socials";
 
-type Kind = "text" | "long" | "list" | "object" | "records" | "json";
+type Kind =
+  | "text"
+  | "long"
+  | "list"
+  | "object"
+  | "records"
+  | "json"
+  | "photos";
 
 interface BlockDef {
   key: BlockKey;
@@ -83,6 +91,13 @@ const BLOCKS: BlockDef[] = [
       { key: "letterboxdUser", label: "Letterboxd username" },
       { key: "lastfmUser", label: "Last.fm username" },
     ],
+  },
+  {
+    key: "photos",
+    label: "Photo deck",
+    page: "Home",
+    kind: "photos",
+    hint: "Upload photographs for the home page deck. The first one sits on top of the stack, and the deck only becomes swipeable once there are two.",
   },
   {
     key: "positioning",
@@ -179,7 +194,6 @@ const BLOCKS: BlockDef[] = [
       { key: "url", label: "URL" },
       { key: "icon", label: "Icon key", hint: "See social-icons.ts" },
       { key: "note", label: "Note", long: true },
-      { key: "wide", label: "Wide card", hint: 'Type true or leave blank.' },
       { key: "featured", label: "Featured", hint: 'Type true or leave blank.' },
     ],
   },
@@ -213,7 +227,7 @@ function coerce(key: BlockKey, value: unknown): unknown {
   if (key !== "socials" || !Array.isArray(value)) return value;
   return value.map((row) => {
     const next = { ...(row as Record<string, unknown>) };
-    for (const flag of ["wide", "featured"]) {
+    for (const flag of ["featured"]) {
       const raw = next[flag];
       if (typeof raw === "string") {
         const truthy = raw.trim().toLowerCase() === "true";
@@ -484,6 +498,17 @@ function BlockEditor({
             rows={Array.isArray(draft) ? (draft as Record<string, unknown>[]) : []}
             fields={block.fields ?? []}
             titleKey={block.titleKey ?? "label"}
+            onChange={(next) => setDraft(next)}
+          />
+        ) : null}
+
+        {block.kind === "photos" ? (
+          <PhotoEditor
+            rows={
+              Array.isArray(draft)
+                ? (draft as { src: string; alt?: string }[])
+                : []
+            }
             onChange={(next) => setDraft(next)}
           />
         ) : null}

@@ -13,7 +13,6 @@
  *      url: "https://...",
  *      icon: "threads",        // key from ICONS in ./social-icons.ts
  *      note: "shitposting",
- *      wide: true,             // card spans two columns
  *      featured: true,         // also shown in the compact header row
  *    }
  *
@@ -27,7 +26,6 @@ export interface Social {
   url: string;
   icon: string;
   note?: string;
-  wide?: boolean;
   featured?: boolean;
 }
 
@@ -39,7 +37,6 @@ export const defaultSocials: Social[] = [
     url: "https://github.com/aryqn13",
     icon: "github",
     note: "Engines, backends and papers rebuilt from scratch",
-    wide: true,
     featured: true,
   },
   {
@@ -67,7 +64,6 @@ export const defaultSocials: Social[] = [
     url: "https://letterboxd.com/aryqn13/",
     icon: "letterboxd",
     note: "Everything I watch, logged and over analysed",
-    wide: true,
     featured: true,
   },
   {
@@ -128,7 +124,6 @@ export const defaultSocials: Social[] = [
     url: "mailto:aryangrajput13@gmail.com",
     icon: "mail",
     note: "The fastest way to reach me",
-    wide: true,
     featured: true,
   },
 ];

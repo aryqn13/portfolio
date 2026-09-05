@@ -18,6 +18,7 @@ import {
 
 const BLOCKS = [
   "profile",
+  "photos",
   "positioning",
   "bio",
   "quickFacts",

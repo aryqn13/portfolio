@@ -79,7 +79,7 @@ export default function Home() {
           <div className="flex items-center gap-5">
             <a
               href={`mailto:${profile.email}`}
-              className="slug link-underline"
+              className="slug link-underline -my-2 inline-flex min-h-10 items-center py-2 normal-case"
               style={{ color: "var(--silver)" }}
             >
               {profile.email}

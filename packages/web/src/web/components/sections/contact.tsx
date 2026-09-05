@@ -21,7 +21,7 @@ export function Contact() {
           <Reveal>
             <a
               href={`mailto:${profile.email}`}
-              className="display block text-[clamp(1.4rem,4.2vw,2.7rem)] transition-colors duration-500"
+              className="display -my-2 block break-words py-2 text-[clamp(1.4rem,4.2vw,2.7rem)] transition-colors duration-500"
               style={{ color: "var(--white)" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = "var(--silver)";
@@ -49,7 +49,7 @@ export function Contact() {
                     aria-label={social.label}
                     title={social.label}
                     style={{ color: "var(--grey)" }}
-                    className="transition-colors duration-300 hover:!text-white"
+                    className="-m-2.5 inline-flex h-10 w-10 items-center justify-center transition-colors duration-300 hover:!text-white"
                   >
                     <Icon size={18} />
                   </a>

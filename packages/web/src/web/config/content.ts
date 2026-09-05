@@ -47,6 +47,16 @@ export interface SiteContent {
   guestbookIntro: string;
 }
 
+/**
+ * One card in the home page photo stack. Drop more files into
+ * packages/web/public/images/ and append them here (or in /studio) to grow the
+ * deck. The first entry is the card on top.
+ */
+export interface Photo {
+  src: string;
+  alt?: string;
+}
+
 export interface Experience {
   company: string;
   role: string;
@@ -111,6 +121,8 @@ export const defaultContent: SiteContent = {
     letterboxdUser: "aryqn13",
     lastfmUser: "aryan_91",
   },
+
+  photos: [{ src: "/images/avatar.png", alt: "Aryan" }],
 
   positioning: [
     "I build the systems that distribute a product,",

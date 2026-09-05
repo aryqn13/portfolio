@@ -55,7 +55,7 @@ export function Writing() {
                       style={{ color: "var(--grey-hi)" }}
                       className="transition-colors duration-500 group-hover:!text-white"
                     />
-                    <span className="slug">{entry.handle}</span>
+                    <span className="slug normal-case">{entry.handle}</span>
                   </div>
                   <ArrowUpRight
                     size={17}

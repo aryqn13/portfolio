@@ -88,6 +88,10 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* The decorative glows sit outside the column on purpose. Clip them at the
+       root so a phone never gets a sideways scroll. `clip` rather than
+       `hidden`, so nothing here becomes a scroll container. */
+    overflow-x: clip;
   }
 
   body {

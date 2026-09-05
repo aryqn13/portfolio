@@ -7,12 +7,14 @@ import ElsewherePage from "./pages/elsewhere";
 import Studio from "./pages/studio";
 import { Provider } from "./components/provider";
 import { ContentProvider } from "./context/content";
+import { ScrollTop } from "./components/scroll-top";
 import { AgentFeedback, RunableBadge } from "@runablehq/website-runtime";
 
 function App() {
   return (
     <Provider>
       <ContentProvider>
+        <ScrollTop />
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/work" component={WorkPage} />

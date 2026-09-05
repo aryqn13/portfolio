@@ -1,21 +1,24 @@
-import { useState } from "react";
 import { Link } from "wouter";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { Enter } from "../reveal";
 import { useContent } from "../../context/content";
 import { resolveIcon } from "../../config/social-icons";
+import { PhotoStack } from "../photo-stack";
 
 export function Hero() {
-  const { profile, positioning, socials, resumes } = useContent();
-  const [hover, setHover] = useState(false);
+  const { profile, positioning, socials, resumes, photos } = useContent();
   const featured = socials.filter((s) => s.featured).slice(0, 6);
 
   return (
     <section id="opening" className="relative pt-32 pb-8 md:pt-40">
       <div className="glow left-[-10%] top-[4%] h-[420px] w-[420px]" />
 
-      <div className="relative grid gap-12 md:grid-cols-12 md:gap-10">
-        <div className="md:col-span-8">
+      {/*
+        Three grid children so the portrait can sit between the headline and the
+        meta block on a phone, and beside both, optically centred, on a desktop.
+      */}
+      <div className="relative grid gap-10 md:grid-cols-12 md:gap-x-10 md:gap-y-8">
+        <div className="md:col-span-7 md:col-start-1 md:row-start-1">
           <Enter>
             <div className="flex items-baseline gap-4">
               <span className="slug" style={{ color: "var(--silver)" }}>
@@ -48,9 +51,19 @@ export function Hero() {
             </p>
           </Enter>
 
+        </div>
+
+        {/* Portrait deck. Grey at rest, colour on hover. Throw to shuffle. */}
+        <div className="md:col-span-4 md:col-start-9 md:row-span-2 md:row-start-1 md:self-start">
+          <Enter delay={0.2}>
+            <PhotoStack photos={photos} name={profile.name} />
+          </Enter>
+        </div>
+
+        <div className="md:col-span-7 md:col-start-1 md:row-start-2">
           <Enter delay={0.24}>
             <div
-              className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 border-t pt-6"
+              className="flex flex-wrap items-center gap-x-7 gap-y-3 border-t pt-6"
               style={{ borderColor: "var(--edge)" }}
             >
               <span className="slug" style={{ color: "var(--white)" }}>
@@ -60,7 +73,7 @@ export function Hero() {
                 href={profile.companyUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="slug link-underline inline-flex items-center gap-1.5"
+                className="slug link-underline -my-2 inline-flex min-h-10 items-center gap-1.5 py-2"
                 style={{ color: "var(--silver)" }}
               >
                 {profile.company} <ArrowUpRight size={11} />
@@ -116,51 +129,13 @@ export function Hero() {
                     aria-label={social.label}
                     title={social.label}
                     style={{ color: "var(--grey)" }}
-                    className="transition-colors duration-300 hover:!text-white"
+                    className="-m-2.5 inline-flex h-10 w-10 items-center justify-center transition-colors duration-300 hover:!text-white"
                   >
                     <Icon size={17} />
                   </a>
                 );
               })}
             </div>
-          </Enter>
-        </div>
-
-        {/* Portrait. Grey at rest, colour on hover. */}
-        <div className="md:col-span-4">
-          <Enter delay={0.2}>
-            <button
-              type="button"
-              onMouseEnter={() => setHover(true)}
-              onMouseLeave={() => setHover(false)}
-              onFocus={() => setHover(true)}
-              onBlur={() => setHover(false)}
-              onClick={() => setHover((v) => !v)}
-              aria-label="Portrait, hover for colour"
-              className="relative block w-full cursor-pointer overflow-hidden border text-left"
-              style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
-            >
-              <img
-                src="/images/avatar.png"
-                alt="Aryan"
-                className="aspect-[4/5] w-full object-cover object-top transition-[filter,transform] duration-700"
-                style={{
-                  filter: hover
-                    ? "grayscale(0) contrast(1.02) saturate(1.05)"
-                    : "grayscale(1) contrast(1.08) brightness(0.94)",
-                  transform: hover ? "scale(1.02)" : "scale(1)",
-                }}
-              />
-              <span
-                className="slug absolute bottom-3 left-3 px-2 py-1"
-                style={{
-                  background: "rgba(6,6,6,0.7)",
-                  color: hover ? "var(--white)" : "var(--grey-hi)",
-                }}
-              >
-                {hover ? "In colour" : "Hover for colour"}
-              </span>
-            </button>
           </Enter>
         </div>
       </div>
