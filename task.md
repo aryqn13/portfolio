@@ -255,9 +255,20 @@ docblock in `config/content.ts` and in design.md under Content model / CVs.
       `/writing` svg).
 - [x] typecheck 3/3, build clean, all five routes 200
 
+- [x] og-image.png regenerated against the current home page with /tmp/og.py,
+      downscaled to 1200x630. The dist copy is smaller than the public source
+      because vite optimizes the PNG on build; that is not a stale file, the
+      served bytes were checked by eye.
+- [x] rounds 11 and 12 pushed to github.com/aryqn13/portfolio as `35a2a17`,
+      one commit because the two rounds touch the same files and a split would
+      have produced an intermediate commit that does not build. DEPLOY.pdf left
+      untracked as a generated artifact of DEPLOY.md. `.env` still untracked.
+
 ### Next
 - [ ] user uploads his new PDFs via /studio -> Resumes -> Replace PDF
-- [ ] rounds 11 and 12 are both still uncommitted; commit + push to
-      github.com/aryqn13/portfolio once he is happy
-- [ ] og-image.png still shows the pre-round-11 home layout, worth
-      regenerating with /tmp/og.py before he shares the link
+- [ ] the Vercel deploy has still never been verified from outside this
+      sandbox; likeliest failure is @vercel/node bundling the root function's
+      relative import into packages/web/src/api, fallback is setting Vercel's
+      Root Directory to packages/web
+- [ ] the interactive tickable version of the deploy guide still needs a new
+      chat, since app_init refuses a second app in this one
