@@ -12,13 +12,18 @@ import { s3, bucket } from "../lib/s3";
  * Owner only: an anonymous visitor cannot mint an upload URL.
  */
 
-const ALLOWED = [
+const IMAGES = [
   "image/png",
   "image/jpeg",
   "image/webp",
   "image/avif",
   "image/gif",
 ];
+
+/** CVs are uploaded the same way, and read back through the same route. */
+const DOCUMENTS = ["application/pdf"];
+
+const ALLOWED = [...IMAGES, ...DOCUMENTS];
 
 /** Keeps the key predictable and safe to put in a URL. */
 const slug = (name: string) =>
@@ -38,10 +43,15 @@ export const upload = {
     )
     .handler(async ({ input }) => {
       if (!ALLOWED.includes(input.contentType)) {
-        throw new Error("Images only: png, jpeg, webp, avif or gif.");
+        throw new Error(
+          "Images (png, jpeg, webp, avif, gif) or a PDF.",
+        );
       }
 
-      const key = `photos/${Date.now()}-${slug(input.filename)}`;
+      // Documents and photographs live under separate prefixes so the bucket
+      // stays readable. Both are served back through /api/files/*.
+      const folder = DOCUMENTS.includes(input.contentType) ? "resumes" : "photos";
+      const key = `${folder}/${Date.now()}-${slug(input.filename)}`;
 
       const url = await getSignedUrl(
         s3,

@@ -36,6 +36,43 @@ contrast, type weight and spacing. There is no hue anywhere in the interface.
 The contributions graph uses five steps between `--ink-3` and `--white`, which
 is the only place a scale of greys carries data.
 
+### The accent
+
+| Token        | Value     | Use                              |
+| ------------ | --------- | -------------------------------- |
+| `--mark`     | `#5b8cff` | Marked phrases, icon hover, thumbnail hover border |
+| `--mark-dim` | `#3f6bd6` | Reserved, unused so far          |
+
+One cool electric blue, and it is the **only** hue in the system besides the
+rule that photographs and posters sit greyscale and go colour on hover. It was
+added deliberately, not decoratively: an all-grey page gives the eye nothing to
+land on, so the blue marks the handful of phrases that should be read first.
+
+Where it is permitted:
+
+- marked phrases in prose (see below)
+- a skill tile's icon on hover
+- a proof-of-work thumbnail's border on hover
+
+Where it is not: surfaces, default borders, headings, nav, buttons, any block
+of colour. If more than a few words on a screen are blue, it has been overused
+— one or two marks per paragraph is the ceiling.
+
+**Careful:** the shadcn `--accent` token was already taken (it maps to
+`--ink-4`, used by template UI components). The blue is `--mark`. Do not
+repoint `--accent`.
+
+### Marked phrases
+
+Wrap a phrase in `**double asterisks**` in any content string and
+`components/marked.tsx` renders it in `--mark` at the same weight and size, so
+the sentence keeps its rhythm. Colour only: no background, no bold.
+
+This is a typing convention rather than a code change on purpose — content is
+edited from `/studio`, so the owner can add and remove highlights without
+touching the codebase. Currently parsed in: `bio`, experience `points`,
+project blurbs, and `sharpening`.
+
 ## Type
 
 - **Display**: Archivo 700 (`.display`) and 800 (`.display-tight`), tracking
@@ -60,7 +97,7 @@ is the only place a scale of greys carries data.
 
 | Page         | Route        | Contents                                          |
 | ------------ | ------------ | ------------------------------------------------- |
-| Home         | `/`          | Hero, bio in full, index of the other pages       |
+| Home         | `/`          | Hero, short bio, capability, work preview, index  |
 | Work         | `/work`      | Contributions graph, experience, projects, toolkit |
 | Interests    | `/interests` | Favourite films, live Letterboxd, music links     |
 | Writing      | `/writing`   | Substack and Medium panels                        |
@@ -69,6 +106,68 @@ is the only place a scale of greys carries data.
 
 The GitHub contributions graph deliberately does not appear on the home page.
 Every page ends with a "Next" link, so the site reads as a sequence.
+
+### Footer
+
+Every footer on the site carries the same three things: the credit line, every
+social as a small icon, and the email plus the view count. `FooterSocials` in
+`components/sections/previews.tsx` renders the icon row, and both footers
+(`pages/home.tsx` and `components/page-shell.tsx`) use it, so a social added in
+`/studio` appears everywhere at once. Icons only, no labels, `--grey` at rest
+and white on hover, each wrapped in a 40px tap target via negative margin.
+
+### The home page carries everything
+
+The rule: nothing important should need a second click. A first-time visitor
+should understand what this person does, what they can operate, and where they
+have worked, without leaving `/`. So the home page runs:
+
+| Reel | Section    | What it does                                       |
+| ---- | ---------- | -------------------------------------------------- |
+| 01   | Opening    | Name, positioning, status, CVs, portrait deck      |
+| 02   | About      | The short bio, education, footnotes                |
+| 03   | Capability | Skill logo grid, both columns, compact             |
+| 04   | Work       | Real preview: recent three roles, then the projects |
+| 05   | Index      | Interests, Writing, Elsewhere, each with a preview |
+
+Work gets a *proper* preview because it is what someone hiring came for; it is
+pulled out of the index list for that reason. The other three get light strips
+under their index row — film posters, publication names, social icons — enough
+to prove there is something behind the link without rebuilding the page.
+
+`components/sections/previews.tsx` owns all of it. The previews read the same
+content blocks the real pages do, so they cannot drift.
+
+### Skills
+
+`components/sections/skills-grid.tsx` renders both the home grid (`compact`)
+and the `/work` toolkit from one component, so the two never disagree.
+
+Icons resolve through `config/skill-icons.tsx`, keyed on the lowercased skill
+name. Skills stay plain strings in the content model, which keeps `/studio` a
+text editor and means a saved override can never break the grid — an unknown
+skill falls back to a generic glyph and still renders.
+
+Tech gets its real brand mark from `react-icons/si`. Growth work has no brand
+marks to borrow, so it gets drawn monoline icons from `lucide-react`, which sit
+at the same visual weight. One texture across the grid, not two. Note
+`SiCss3` does not exist; HTML/CSS uses `SiHtml5`.
+
+### Proof of work
+
+Each experience entry takes an optional `shots` array. They render as a
+thumbnail strip under the bullets, greyscale at rest and colour on hover like
+every other image on the site, and open full size in `components/lightbox.tsx`
+with arrow-key and Escape support.
+
+The lightbox is portalled to `document.body` at `z-[200]`, because the grain
+(60) and vignette (55) overlays are `position: fixed` and would otherwise sit
+on top of it.
+
+Uploads happen in `/studio`. The experience block is edited as raw JSON, which
+is hopeless for images, so `components/studio/shots-editor.tsx` sits above that
+textarea and gives each job a visual strip; it reads and writes the same JSON
+string, so the two editors can never disagree.
 
 ## Navigation
 
@@ -231,6 +330,22 @@ Adding a social link is one object in the socials block: `id`, `label`,
 `note` and `featured`. `featured` also puts the icon in the compact rows in the
 nav overlay, the hero and the contact block.
 
+### CVs
+
+Order is meaning. `resumes[0]` is the main CV and everything after it is an
+optional cut. There is deliberately no `primary` flag: a flag can hold two
+primaries or none, whereas an ordered list cannot enter an invalid state, the
+studio already has move up/down arrows, and it matches the photo deck where
+`photos[0]` is the card on top. Reordering the rows is what promotes a CV.
+
+The hierarchy is carried by weight, not by colour. In the hero the main CV is a
+real bordered button next to "See the work"; the alternates sit on their own
+line below behind an `Also` slug, dim label against a `--silver` link so the
+line reads as label plus link rather than one flat mono string. On `/elsewhere`
+the main CV is a full bordered panel badged `Main CV` in `--mark` with the label
+at display size, and the alternates are quiet borderless rows under an "Also
+available" slug. That badge is one of the few sanctioned uses of the blue.
+
 Socials render as an index, not as cards. One hairline row per account holding
 a number, the logo, the name, the handle, the note and an arrow, all on a single
 baseline, so eleven accounts scan in one pass instead of filling a screen with
@@ -247,12 +362,17 @@ for an HMAC signed token with a 12 hour TTL, stored in localStorage and sent as
 
 ## Storage
 
-Photographs uploaded from the studio go to Tigris over the S3 API. The browser
-never sends bytes through the API server: `upload.presign` (owner only, images
-only, 8MB cap) returns a presigned PUT, the file goes straight to the bucket,
-and the block stores `/api/files/<key>`. That path is a small streaming Hono
-route which reads the object back and caches it hard, so stored content never
-holds a presigned URL that would expire a week later.
+Photographs and CV PDFs uploaded from the studio go to Tigris over the S3 API.
+The browser never sends bytes through the API server: `upload.presign` (owner
+only) returns a presigned PUT, the file goes straight to the bucket, and the
+block stores `/api/files/<key>`. That path is a small streaming Hono route
+which reads the object back and caches it hard, so stored content never holds a
+presigned URL that would expire a week later.
+
+`presign` accepts images (png, jpeg, webp, avif, gif) and `application/pdf`,
+and the key prefix follows the type: images land under `photos/`, PDFs under
+`resumes/`. `/api/files/*` echoes back the stored `ContentType`, so a PDF
+serves as a PDF with no special casing. Nothing else is accepted.
 
 ## Live data
 

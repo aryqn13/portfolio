@@ -1,12 +1,55 @@
+import { useState } from "react";
 import { Section, Tag } from "../section";
 import { Reveal } from "../reveal";
+import { Marked } from "../marked";
+import { Lightbox } from "../lightbox";
 import { useContent } from "../../context/content";
+import type { Shot } from "../../config/content";
 
 const KIND_LABEL: Record<string, string> = {
   growth: "Growth",
   engineering: "Engineering",
   community: "Community",
 };
+
+/** Thumbnail strip of proof of work. Click opens the shot full size. */
+function Shots({ shots }: { shots: Shot[] }) {
+  const [open, setOpen] = useState<number | null>(null);
+
+  return (
+    <div className="mt-6">
+      <span className="slug">Proof of work</span>
+      <div className="mt-2.5 flex flex-wrap gap-2">
+        {shots.map((shot, i) => (
+          <button
+            key={`${shot.src}-${i}`}
+            type="button"
+            aria-label={shot.caption ?? `Open screenshot ${i + 1}`}
+            title={shot.caption}
+            onClick={() => setOpen(i)}
+            className="h-16 w-24 overflow-hidden border transition-colors sm:h-[4.6rem] sm:w-28"
+            style={{ borderColor: "var(--edge)", background: "var(--ink-3)" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "var(--mark)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "var(--edge)";
+            }}
+          >
+            <img
+              src={shot.src}
+              alt={shot.caption ?? ""}
+              loading="lazy"
+              className="h-full w-full object-cover opacity-70 grayscale transition duration-500 hover:opacity-100 hover:grayscale-0"
+            />
+          </button>
+        ))}
+      </div>
+
+      <Lightbox shots={shots} index={open} onClose={() => setOpen(null)} onIndex={setOpen} />
+    </div>
+  );
+}
 
 export function Work() {
   const { experience } = useContent();
@@ -67,7 +110,9 @@ export function Work() {
                         <span className="mt-1 shrink-0" style={{ color: "var(--grey)" }}>
                           /
                         </span>
-                        <span>{point}</span>
+                        <span>
+                          <Marked>{point}</Marked>
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -79,6 +124,8 @@ export function Work() {
                       ))}
                     </div>
                   ) : null}
+
+                  {job.shots?.length ? <Shots shots={job.shots} /> : null}
                 </div>
               </article>
             </Reveal>

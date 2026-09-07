@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
 import { Nav } from "./nav";
 import { Enter } from "./reveal";
+import { FooterSocials } from "./sections/previews";
 import { pages } from "../config/content";
 import { useContent } from "../context/content";
 import { useCountVisit, useViews } from "../queries/guestbook";
@@ -89,12 +90,15 @@ export function PageShell({ index, label, title, lead, children }: PageShellProp
         </Link>
 
         <footer
-          className="flex flex-wrap items-center justify-between gap-4 border-t py-8"
+          className="flex flex-wrap items-center justify-between gap-x-6 gap-y-5 border-t py-8"
           style={{ borderColor: "var(--edge)" }}
         >
           <span className="slug">
             Aryan, {new Date().getFullYear()}. Built by hand.
           </span>
+
+          <FooterSocials />
+
           <div className="flex items-center gap-5">
             <a
               href={`mailto:${profile.email}`}

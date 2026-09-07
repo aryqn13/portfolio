@@ -7,6 +7,8 @@ import { resolveIcon } from "../../config/social-icons";
 export function Contact() {
   const { profile, resumes, socials } = useContent();
   const featured = socials.filter((s) => s.featured);
+  /* First CV leads, the rest are optional cuts. */
+  const [main, ...alternates] = resumes;
 
   return (
     <Section
@@ -61,36 +63,83 @@ export function Contact() {
 
         <div className="lg:col-span-5">
           <Reveal delay={0.08}>
-            <p className="slug">Resume, two cuts</p>
-            <div className="mt-4 space-y-px">
-              {resumes.map((resume) => (
-                <a
-                  key={resume.label}
-                  href={resume.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group flex items-center justify-between gap-4 p-4 transition-colors duration-500"
-                  style={{ background: "var(--ink-2)" }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "var(--ink-3)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "var(--ink-2)";
-                  }}
-                >
-                  <span>
-                    <span
-                      className="display block text-lg"
-                      style={{ color: "var(--white)" }}
-                    >
-                      {resume.label}
-                    </span>
-                    <span className="slug mt-1 block">{resume.note}</span>
+            <p className="slug">Resume</p>
+
+            {/*
+              Order is meaning: the first CV leads with a full panel, the rest
+              are optional cuts on a quiet row underneath.
+            */}
+            {main ? (
+              <a
+                href={main.href}
+                target="_blank"
+                rel="noreferrer"
+                className="group mt-4 flex items-center justify-between gap-4 border p-5 transition-colors duration-500"
+                style={{
+                  background: "var(--ink-2)",
+                  borderColor: "var(--edge)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "var(--ink-3)";
+                  e.currentTarget.style.borderColor = "var(--edge-hi)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "var(--ink-2)";
+                  e.currentTarget.style.borderColor = "var(--edge)";
+                }}
+              >
+                <span>
+                  <span className="slug" style={{ color: "var(--mark)" }}>
+                    Main CV
                   </span>
-                  <Download size={15} style={{ color: "var(--grey-hi)" }} />
-                </a>
-              ))}
-            </div>
+                  <span
+                    className="display mt-2 block text-[1.4rem]"
+                    style={{ color: "var(--white)" }}
+                  >
+                    {main.label}
+                  </span>
+                  <span className="slug mt-1.5 block">{main.note}</span>
+                </span>
+                <Download
+                  size={18}
+                  className="shrink-0 transition-colors duration-500 group-hover:!text-white"
+                  style={{ color: "var(--grey-hi)" }}
+                />
+              </a>
+            ) : null}
+
+            {alternates.length ? (
+              <div className="mt-4">
+                <span className="slug">Also available</span>
+                <div className="mt-2 space-y-px">
+                  {alternates.map((resume) => (
+                    <a
+                      key={resume.label}
+                      href={resume.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group flex items-center justify-between gap-4 py-3 transition-colors"
+                      style={{ color: "var(--grey-hi)" }}
+                    >
+                      <span>
+                        <span
+                          className="text-[0.98rem] transition-colors duration-300 group-hover:!text-white"
+                          style={{ color: "var(--silver)" }}
+                        >
+                          {resume.label}
+                        </span>
+                        <span className="slug mt-1 block">{resume.note}</span>
+                      </span>
+                      <Download
+                        size={14}
+                        className="shrink-0 transition-colors duration-300 group-hover:!text-white"
+                        style={{ color: "var(--grey)" }}
+                      />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </Reveal>
         </div>
       </div>

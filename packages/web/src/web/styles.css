@@ -17,6 +17,12 @@
   --silver: #b4b4b4;
   --white: #fafafa;
 
+  /* The single sanctioned break from monochrome. Used only to mark key
+     phrases in prose and to light up an icon on hover. Never for surfaces,
+     never for borders, never decoratively. See design.md. */
+  --mark: #5b8cff;
+  --mark-dim: #3f6bd6;
+
   --radius: 2px;
   --background: var(--ink);
   --foreground: var(--white);
@@ -53,6 +59,7 @@
   --color-grey-hi: var(--grey-hi);
   --color-silver: var(--silver);
   --color-white: var(--white);
+  --color-mark: var(--mark);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -148,6 +155,13 @@
   .prose-serif p {
     max-width: 70ch;
   }
+
+  /* Written as **phrase** in the content and parsed at render. Colour only,
+     no background, no weight change: the sentence keeps its rhythm. */
+  .mark {
+    color: var(--mark);
+  }
+
 
   /* Heavier grain than usual, this is the only texture in the system. */
   .grain::before {

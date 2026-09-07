@@ -57,6 +57,16 @@ export interface Photo {
   alt?: string;
 }
 
+/**
+ * Proof of work attached to a job: dashboards, post screenshots, charts.
+ * Upload them from /studio, which writes the storage path in here. They render
+ * as a thumbnail strip under the bullets and open full size in a lightbox.
+ */
+export interface Shot {
+  src: string;
+  caption?: string;
+}
+
 export interface Experience {
   company: string;
   role: string;
@@ -66,6 +76,7 @@ export interface Experience {
   kind: "growth" | "engineering" | "community";
   points: string[];
   stack?: string[];
+  shots?: Shot[];
 }
 
 export interface Project {
@@ -99,6 +110,17 @@ export interface WritingEntry {
   topics: string[];
 }
 
+/**
+ * A downloadable CV.
+ *
+ * ORDER IS MEANING: the first entry is the main CV and gets the prominent
+ * treatment everywhere it appears. Everything after it is a secondary cut,
+ * offered quietly for the people who want that angle instead. Reorder from
+ * /studio to change which one leads.
+ *
+ * `href` is either a file in packages/web/public/files/ or an /api/files/...
+ * path once a PDF has been uploaded from the studio.
+ */
 export interface Resume {
   label: string;
   note: string;
@@ -129,12 +151,14 @@ export const defaultContent: SiteContent = {
     "and the software those systems run on.",
   ],
 
+  /**
+   * Wrap a phrase in **double asterisks** to render it in the accent colour.
+   * Works here and in /studio. Keep it to a few phrases per paragraph.
+   */
   bio: [
-    "I run growth at Runable and write the code around it, which is a polite way of saying I could not decide between the two and stopped pretending I had to.",
-    "Most of my day is Reddit. It is the one channel that punishes marketing on sight, so the only strategy that survives is being genuinely useful and shutting up about your product roughly 80 percent of the time. I got good at that, then moved into Content Operations so the thing that worked stops living in my head and starts living in a workflow someone else can run.",
-    "The engineering half is not decorative. I wrote an autograd engine in plain Python because I refused to keep using backprop as a magic word, rebuilt the Transformer from the paper for the same reason, and shipped a FastAPI and Postgres backend with real auth and migrations. Before that, five months of enterprise React where I learned that component registries and typed validation are boring in exactly the way that saves everyone three weeks.",
-    "Outside work it is films, music and football, in whatever order is currently ruining my sleep. I log roughly a film a week on Letterboxd and review them with more confidence than qualification. Guru Dutt and Wong Kar-wai on the good days, a genuinely terrible comedy on the better ones. I once spent 18 months running a 200 member Discord for an independent musician, and put together a 50 person listening party in three days for zero rupees, which taught me that community work and growth work are the same job wearing different clothes.",
-    "Right now I am getting properly good at full stack TypeScript, so the gap between an idea and something actually running keeps getting smaller.",
+    "I work in **growth at Runable** and write the code around it, which is a polite way of saying I could not decide between the two and stopped pretending I had to.",
+    "Most of my day is **Reddit**, the one channel that punishes marketing on sight. The only strategy that survives there is being genuinely useful and shutting up about your product roughly 80 percent of the time. That worked, so I moved into **Content Operations** and turned it into a workflow other people can run without me in the room.",
+    "The engineering half is not decorative. I wrote an **autograd engine in plain Python**, rebuilt the Transformer straight from the paper, and shipped a FastAPI and Postgres backend with real auth and migrations, after five months of enterprise React. Outside that it is films, music and football, plus 18 months running a 200 member community, which taught me that community work and growth work are the same job in different clothes. Right now I am getting properly good at **full stack TypeScript**.",
   ],
 
   quickFacts: [

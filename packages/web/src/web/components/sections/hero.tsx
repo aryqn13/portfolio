@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { ArrowUpRight, ArrowRight } from "lucide-react";
+import { ArrowUpRight, ArrowRight, Download } from "lucide-react";
 import { Enter } from "../reveal";
 import { useContent } from "../../context/content";
 import { resolveIcon } from "../../config/social-icons";
@@ -8,6 +8,8 @@ import { PhotoStack } from "../photo-stack";
 export function Hero() {
   const { profile, positioning, socials, resumes, photos } = useContent();
   const featured = socials.filter((s) => s.featured).slice(0, 6);
+  /* First CV leads, the rest are optional cuts. */
+  const [main, ...alternates] = resumes;
 
   return (
     <section id="opening" className="relative pt-32 pb-8 md:pt-40">
@@ -101,20 +103,47 @@ export function Hero() {
                 />
               </Link>
 
-              {resumes.map((resume) => (
+              {/*
+                Order is meaning: the first CV is the main one and gets a real
+                button, the rest are secondary cuts and sit quietly underneath.
+              */}
+              {main ? (
                 <a
-                  key={resume.label}
-                  href={resume.href}
+                  href={main.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="slug inline-flex items-center gap-2 border px-5 py-3 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
+                  className="slug group inline-flex items-center gap-2.5 border px-5 py-3 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
                   style={{ borderColor: "var(--edge)", color: "var(--grey-hi)" }}
                 >
-                  {resume.label} CV
+                  <Download size={13} />
+                  {main.label} CV
                 </a>
-              ))}
+              ) : null}
             </div>
           </Enter>
+
+          {alternates.length ? (
+            <Enter delay={0.36}>
+              <div className="mt-3.5 flex flex-wrap items-center gap-x-3 gap-y-1">
+                <span className="slug" style={{ color: "var(--grey)" }}>
+                  Also
+                </span>
+                {alternates.map((resume) => (
+                  <a
+                    key={resume.label}
+                    href={resume.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="slug link-underline -my-2 inline-flex min-h-10 items-center gap-1.5 py-2 transition-colors hover:!text-white"
+                    style={{ color: "var(--silver)" }}
+                  >
+                    <Download size={11} />
+                    {resume.label} CV
+                  </a>
+                ))}
+              </div>
+            </Enter>
+          ) : null}
 
           <Enter delay={0.4}>
             <div className="mt-8 flex flex-wrap items-center gap-5">

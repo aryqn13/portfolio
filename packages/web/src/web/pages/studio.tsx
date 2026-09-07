@@ -31,6 +31,8 @@ import {
 } from "../components/studio/fields";
 import type { FieldDef } from "../components/studio/fields";
 import { PhotoEditor } from "../components/studio/photo-editor";
+import { ShotsEditor } from "../components/studio/shots-editor";
+import { ResumeEditor } from "../components/studio/resume-editor";
 
 type BlockKey =
   | "profile"
@@ -58,7 +60,8 @@ type Kind =
   | "object"
   | "records"
   | "json"
-  | "photos";
+  | "photos"
+  | "resumes";
 
 interface BlockDef {
   key: BlockKey;
@@ -201,13 +204,8 @@ const BLOCKS: BlockDef[] = [
     key: "resumes",
     label: "Resumes",
     page: "Elsewhere",
-    kind: "records",
-    titleKey: "label",
-    fields: [
-      { key: "label", label: "Label" },
-      { key: "note", label: "Note", long: true },
-      { key: "href", label: "File path", hint: "e.g. /files/name.pdf" },
-    ],
+    kind: "resumes",
+    hint: "The top one is the main CV. Upload a PDF to replace it in place.",
   },
   {
     key: "guestbookIntro",
@@ -502,6 +500,17 @@ function BlockEditor({
           />
         ) : null}
 
+        {block.kind === "resumes" ? (
+          <ResumeEditor
+            rows={
+              Array.isArray(draft)
+                ? (draft as { label: string; note: string; href: string }[])
+                : []
+            }
+            onChange={(next) => setDraft(next)}
+          />
+        ) : null}
+
         {block.kind === "photos" ? (
           <PhotoEditor
             rows={
@@ -514,14 +523,21 @@ function BlockEditor({
         ) : null}
 
         {block.kind === "json" ? (
-          <textarea
-            value={json}
-            onChange={(e) => setJson(e.target.value)}
-            rows={18}
-            spellCheck={false}
-            className={`${inputClass} resize-y leading-[1.55]`}
-            style={inputStyle}
-          />
+          <>
+            {/* Screenshots are impossible to manage as raw JSON, so the
+                experience block gets a visual uploader on top of it. */}
+            {block.key === "experience" ? (
+              <ShotsEditor json={json} onChange={setJson} />
+            ) : null}
+            <textarea
+              value={json}
+              onChange={(e) => setJson(e.target.value)}
+              rows={18}
+              spellCheck={false}
+              className={`${inputClass} resize-y leading-[1.55]`}
+              style={inputStyle}
+            />
+          </>
         ) : null}
       </div>
 

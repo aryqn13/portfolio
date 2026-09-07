@@ -1,5 +1,6 @@
 import { Section } from "../section";
 import { Reveal } from "../reveal";
+import { Marked } from "../marked";
 import { useContent } from "../../context/content";
 
 export function About() {
@@ -26,7 +27,7 @@ export function About() {
                   }
                   style={{ color: i === 0 ? "var(--white)" : "var(--silver)" }}
                 >
-                  {paragraph}
+                  <Marked>{paragraph}</Marked>
                 </p>
               </Reveal>
             ))}
