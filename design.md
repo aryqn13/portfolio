@@ -11,11 +11,11 @@ contrast, type weight and spacing. There is no hue anywhere in the interface.
 2. **Type does the shouting.** Archivo at 700/800 with tight negative tracking
    for anything large, Tinos (Times metrics) for reading, Geist Mono for labels.
 3. **Hairlines, not boxes.** Blocks are separated by 1px rules and 1px gaps
-   between panels, never by rounded cards or shadows. One deliberate exception:
-   the home page photo deck is a 22px radius, because it has to read as a
-   physical stack of prints rather than another panel.
+   between panels, never by shadows or fills that read as chrome. Corners are
+   softened, not bubbled: 6 to 12px, enough to take the blade off an edge and
+   no more. See "Radius" below.
 4. **Motion is one gesture.** Everything enters once, upward, on the same easing
-   curve. Nothing loops except the film grain.
+   curve. Nothing loops except the backdrop dither and the film grain.
 5. **No em dashes.** Anywhere. Commas, full stops, or the word "to".
 
 ## Palette
@@ -83,15 +83,101 @@ project blurbs, and `sharpening`.
 - **Labels**: Geist Mono, 0.6875rem, uppercase, tracking 0.2em (`.slug`). Every
   index number, tag, meta line and button label.
 
+## Radius
+
+Corners used to be near zero by design. They now carry a small curve, because
+at this density a hard 1px corner on every tile read as unfinished rather than
+severe. Four tokens, in `styles.css`, and nothing should invent a fifth:
+
+| Token      | Value  | Use                                    |
+| ---------- | ------ | -------------------------------------- |
+| `--r-chip` | `6px`  | Tags, buttons, inputs, icon buttons    |
+| `--r-tile` | `8px`  | Skill tiles, thumbnails, small cards   |
+| `--r-card` | `12px` | Panels and full cards                  |
+| `--r-img`  | `10px` | Image cards, posters, lightbox media   |
+
+The shadcn `--radius` scale was raised to match (`6/8/12/16px`) so template
+components do not fall out of step. The photo deck keeps its own `20px`, the one
+documented exception, because it has to read as a physical print.
+
 ## Texture
 
-- `.grain` is a fixed fractal noise layer at 7.5% opacity, stepped in five
-  frames over six seconds. It sits above the content and below the badge.
+Two layers, and the split matters. The dither backdrop is now the primary
+texture; grain is a trace on top of it.
+
+- **Dither plates.** `components/dither/dither-panel.tsx` is a WebGL2 shader
+  bounded to a single block. The signal is drifting fbm plus a vertical falloff
+  plus a soft dome that follows the pointer with a critically damped ease,
+  quantised through a **Bayer 4x4** threshold sampled in device pixels, not UV,
+  so the pattern never smears with layout. Settings are `dot 1`, `levels 6`,
+  `lift 0.34`.
+
+  **The rule is that the dither marks openings, and nothing else.** One plate
+  behind the home page's opening block (`sections/hero.tsx`) and one behind
+  every other page's masthead (`page-shell.tsx`). Body copy, cards and lists
+  sit on clean ground.
+
+  This replaced a single fixed full-viewport field, and the reason is worth
+  keeping: a field that covers everything stops being a material and becomes
+  wallpaper. It sat behind body copy it had nothing to do with, it could never
+  be paused because it was always on screen, and it flattened the difference
+  between the parts of a page meant to be loud and the parts meant to be quiet.
+  - **It is edge masked, not cropped**, which is what keeps it from breaking
+    the "hairlines, not boxes" rule. The mask is strongest at the top left,
+    where the index, label and headline sit, and dissolves to nothing before
+    the panel's edges, so there is no visible boundary. The rounded corners are
+    only a fallback for a browser without mask support. No border, no fill.
+  - Plates are positioned with negative insets so the field is established
+    slightly before the headline and gone before the first card.
+  - **Cost control, because a fragment shader is the most expensive thing on
+    the site.** DPR is capped, and plates override the cap to
+    **1** (`dprCap` prop): cost is quadratic in DPR, and six
+    quantised levels of near black gain nothing from a second sample per CSS
+    pixel. Redraws are capped at **30fps** (`fps` prop), which is invisible on
+    a field drifting at 0.06x real time, and the pointer follow is corrected
+    for elapsed time so it feels identical at any ceiling. The noise is
+    multiply-only rather than `fract(sin(dot(p, k)))`, three octaves not four,
+    and the pointer warp reuses the field instead of evaluating a third fbm on
+    every fragment for a dome that is ~0 almost everywhere. An
+    `IntersectionObserver` pauses offscreen and `prefers-reduced-motion`
+    freezes both time and the dome.
+  - Because a plate scrolls out of view, unlike the `fixed` layer it replaced,
+    the shader's `IntersectionObserver` can now actually pause it. Nothing on
+    the site renders GL once you are past the opening.
+  - Smaller tiles keep the defaults (1.5 coarse pointer, 2 desktop), where the
+    fill rate is small enough not to matter.
+  - Cleanup must **never** call `loseContext()`. It kills the context
+    permanently and is keyed to the canvas element, which React reuses across
+    remounts, so every later mount renders black.
+- **Grain** is a fixed fractal noise layer at **5%** opacity, stepped in five
+  frames over six seconds, above content and below the badge. It carries the
+  texture everywhere the dither does not, which is most of the page. The value
+  has moved twice and the history explains it: 7.5% when it was the only
+  texture, 2.2% while a full screen dither covered everything and two competing
+  noise fields read as mud, and 5% now that the dither is bounded to the
+  openings. One line in `styles.css`.
 - `.vignette` is a radial darkening from 42% outward, which keeps attention
   centred without a border.
 - `.glow` is a single 130px blurred white wash at 4.5% opacity, used once on the
   home hero.
-- Both texture layers are disabled under `prefers-reduced-motion`.
+- Imagery can take the same treatment. `components/dither/dither-image.tsx`
+  exports `DitherImage` (a full tile) and `DitherOverlay` (canvas only,
+  `mix-blend-mode: overlay`, for laying over an existing `<img>` that already
+  owns its own sizing and hover filter). The hero portrait uses the overlay at
+  **0.12** opacity, which is deliberately at the edge of perception, and fades
+  to zero on hover with the greyscale. Floyd-Steinberg is the only mode that
+  survives a human face; the ordered modes are for flat fields.
+  - **The working canvas is sized from the laid out box, never from
+    `src.naturalWidth`.** This is a CPU dither on the main thread, and sizing
+    it off the source meant a 4160x3110 photograph allocated a 12.9 million
+    pixel canvas and diffused error across all of it to fill a 332px box. A
+    dither cell below one device pixel is invisible by definition, so working
+    above the displayed size is always waste. Capped at 1400px on the long
+    side and never above the source.
+  - Only the **top card** of the photo deck gets an overlay. The cards behind
+    it show a few millimetres of edge and each overlay is a full dither pass.
+- Grain, vignette and shader motion are all disabled or frozen under
+  `prefers-reduced-motion`.
 
 ## Structure
 
@@ -152,6 +238,20 @@ Tech gets its real brand mark from `react-icons/si`. Growth work has no brand
 marks to borrow, so it gets drawn monoline icons from `lucide-react`, which sit
 at the same visual weight. One texture across the grid, not two. Note
 `SiCss3` does not exist; HTML/CSS uses `SiHtml5`.
+
+### One company, many roles
+
+Two roles at the same employer used to print the company name twice, which read
+as two unrelated jobs instead of a progression. `components/sections/work.tsx`
+now groups **consecutive** entries that share a company: the name appears once
+on the left with a role count and the combined span (start from the oldest role,
+end from the newest), and each role's title, period and location sit on the
+right against a vertical rail with a dot per role. A single-role group renders
+exactly as it did before, so nothing else on the page moved.
+
+The grouping happens **at render time, not in the content model.** `experience`
+stays a flat newest-first list, which keeps `/studio` a plain JSON editor and
+means a third role at the same company needs no code change at all.
 
 ### Proof of work
 

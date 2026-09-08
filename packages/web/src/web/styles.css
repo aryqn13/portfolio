@@ -23,7 +23,20 @@
   --mark: #5b8cff;
   --mark-dim: #3f6bd6;
 
-  --radius: 2px;
+  /* Corner radii. The system used to be near-square (2px) on purpose. It now
+     carries a small, consistent curve so cards and image tiles feel less like
+     cut paper. Still restrained: this is a softening, not a pill shape.
+     --r-chip  tags, buttons, inputs
+     --r-tile  skill tiles, thumbnails, small cards
+     --r-card  panels and full cards
+     --r-img   image cards and media
+     The photo deck stays at its own 20px, which predates these. */
+  --r-chip: 6px;
+  --r-tile: 8px;
+  --r-card: 12px;
+  --r-img: 10px;
+
+  --radius: 8px;
   --background: var(--ink);
   --foreground: var(--white);
   --card: var(--ink-2);
@@ -44,10 +57,10 @@
 }
 
 @theme inline {
-  --radius-sm: 1px;
-  --radius-md: 2px;
-  --radius-lg: 3px;
-  --radius-xl: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
 
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
