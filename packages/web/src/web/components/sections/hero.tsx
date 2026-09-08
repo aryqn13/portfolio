@@ -4,6 +4,7 @@ import { Enter } from "../reveal";
 import { useContent } from "../../context/content";
 import { resolveIcon } from "../../config/social-icons";
 import { PhotoStack } from "../photo-stack";
+import { DitherPanel } from "../dither/dither-panel";
 
 export function Hero() {
   const { profile, positioning, socials, resumes, photos } = useContent();
@@ -12,8 +13,16 @@ export function Hero() {
   const [main, ...alternates] = resumes;
 
   return (
-    <section id="opening" className="relative pt-32 pb-8 md:pt-40">
-      <div className="glow left-[-10%] top-[4%] h-[420px] w-[420px]" />
+    <section
+      id="opening"
+      className="relative isolate pt-32 pb-8 md:pt-40"
+    >
+      {/*
+        The site's texture and its colour vehicle, full-bleed behind the
+        opening. Vertically it starts before the headline and fades out
+        before the meta line and the buttons, which need a clean ground.
+      */}
+      <DitherPanel className="top-[8%] h-[64%] -z-10" />
 
       {/*
         Three grid children so the portrait can sit between the headline and the
@@ -36,7 +45,7 @@ export function Hero() {
               className="display-tight mt-7 text-[clamp(3.4rem,12vw,8.2rem)]"
               style={{ color: "var(--white)" }}
             >
-              Aryan
+              {profile.name}
             </h1>
           </Enter>
 
@@ -52,7 +61,6 @@ export function Hero() {
               ))}
             </p>
           </Enter>
-
         </div>
 
         {/* Portrait deck. Grey at rest, colour on hover. Throw to shuffle. */}
@@ -89,11 +97,14 @@ export function Hero() {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 to="/work"
-                className="slug group inline-flex items-center gap-2.5 border px-5 py-3 transition-colors"
+                className="slug group inline-flex items-center gap-2.5 rounded-[var(--r-chip)] border px-5 py-3 transition-colors"
+                // The one primary action on the site, so it is the one place a
+                // button gets the accent. The secondary CV button stays grey,
+                // which is what keeps the pair legible as a hierarchy.
                 style={{
-                  borderColor: "var(--edge-hi)",
-                  color: "var(--white)",
-                  background: "var(--ink-3)",
+                  borderColor: "var(--mark)",
+                  color: "var(--mark)",
+                  background: "rgba(255,46,154,0.07)",
                 }}
               >
                 See the work
@@ -112,7 +123,7 @@ export function Hero() {
                   href={main.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="slug group inline-flex items-center gap-2.5 border px-5 py-3 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
+                  className="slug group inline-flex items-center gap-2.5 rounded-[var(--r-chip)] border px-5 py-3 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
                   style={{ borderColor: "var(--edge)", color: "var(--grey-hi)" }}
                 >
                   <Download size={13} />
