@@ -163,7 +163,7 @@ export function ShotsEditor({
           return (
             <div
               key={`${job.company}-${job.role}-${index}`}
-              className="border p-4"
+              className="rounded-[var(--r-card)] border p-4"
               style={{ borderColor: "var(--edge)", background: "var(--ink-3)" }}
             >
               <div className="flex flex-wrap items-center justify-between gap-3">
@@ -181,7 +181,7 @@ export function ShotsEditor({
                     setTarget(index);
                     input.current?.click();
                   }}
-                  className="slug inline-flex items-center gap-2 border px-3 py-2 transition-colors disabled:opacity-40 hover:!border-[var(--edge-hi)] hover:!text-white"
+                  className="slug inline-flex items-center gap-2 rounded-[var(--r-chip)] border px-3 py-2 transition-colors disabled:opacity-40 hover:!border-[var(--edge-hi)] hover:!text-white"
                   style={{ borderColor: "var(--edge)", color: "var(--grey-hi)" }}
                 >
                   {busy && target === index ? (
@@ -202,7 +202,7 @@ export function ShotsEditor({
                   {shots.map((shot, si) => (
                     <li
                       key={`${shot.src}-${si}`}
-                      className="border p-2"
+                      className="rounded-[var(--r-tile)] border p-2"
                       style={{
                         borderColor: "var(--edge)",
                         background: "var(--ink-2)",

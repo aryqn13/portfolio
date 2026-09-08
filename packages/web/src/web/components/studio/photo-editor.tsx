@@ -94,7 +94,7 @@ export function PhotoEditor({
           type="button"
           onClick={() => input.current?.click()}
           disabled={busy}
-          className="slug inline-flex items-center gap-2 border px-3 py-2 transition-colors disabled:opacity-40"
+          className="slug inline-flex items-center gap-2 rounded-[var(--r-chip)] border px-3 py-2 transition-colors disabled:opacity-40"
           style={{
             borderColor: "var(--edge-hi)",
             color: "var(--white)",
@@ -130,7 +130,7 @@ export function PhotoEditor({
           {rows.map((row, index) => (
             <li
               key={`${row.src}-${index}`}
-              className="flex gap-3 border p-3"
+              className="flex gap-3 rounded-[var(--r-tile)] border p-3"
               style={{ borderColor: "var(--edge)", background: "var(--ink-3)" }}
             >
               {/* 4:5 and fitted, exactly like the card on the home page. */}

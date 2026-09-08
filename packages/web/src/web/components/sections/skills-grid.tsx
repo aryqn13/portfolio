@@ -15,7 +15,7 @@ export function SkillTile({ name, compact }: { name: string; compact?: boolean }
 
   return (
     <span
-      className={`group/tile flex items-center gap-2.5 border transition-colors ${
+      className={`group/tile flex items-center gap-2.5 rounded-[var(--r-tile)] border transition-colors ${
         compact ? "px-2.5 py-2" : "px-3 py-2.5"
       }`}
       style={{ borderColor: "var(--edge)", background: "var(--ink-3)" }}
@@ -94,7 +94,7 @@ export function SkillGrid({
   return (
     <Reveal delay={delay}>
       <div
-        className={`h-full border ${compact ? "p-5" : "p-6"}`}
+        className={`h-full rounded-[var(--r-card)] border ${compact ? "p-5" : "p-6"}`}
         style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
       >
         {body}

@@ -262,7 +262,7 @@ function Login({ onDone }: { onDone: () => void }) {
           setError("");
           if (password) login.mutate(password);
         }}
-        className="w-full max-w-sm border p-7"
+        className="w-full max-w-sm rounded-[var(--r-card)] border p-7"
         style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
       >
         <span className="slug">Studio</span>
@@ -290,7 +290,7 @@ function Login({ onDone }: { onDone: () => void }) {
             type="button"
             aria-label={show ? "Hide password" : "Show password"}
             onClick={() => setShow((v) => !v)}
-            className="flex w-10 shrink-0 items-center justify-center border transition-colors"
+            className="flex w-10 shrink-0 items-center justify-center rounded-[var(--r-chip)] border transition-colors"
             style={{ borderColor: "var(--edge)", color: "var(--grey)" }}
           >
             {show ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -300,7 +300,7 @@ function Login({ onDone }: { onDone: () => void }) {
         <button
           type="submit"
           disabled={login.isPending || !password}
-          className="slug mt-5 flex w-full items-center justify-center gap-2 border px-4 py-3 transition-colors disabled:opacity-40"
+          className="slug mt-5 flex w-full items-center justify-center gap-2 rounded-[var(--r-chip)] border px-4 py-3 transition-colors disabled:opacity-40"
           style={{
             borderColor: "var(--edge-hi)",
             color: "var(--white)",
@@ -396,7 +396,7 @@ function BlockEditor({
 
   return (
     <div
-      className="border p-5 md:p-6"
+      className="rounded-[var(--r-card)] border p-5 md:p-6"
       style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
     >
       <div className="flex flex-wrap items-baseline justify-between gap-3">
@@ -410,7 +410,7 @@ function BlockEditor({
           <button
             type="button"
             onClick={() => reset.mutate()}
-            className="slug inline-flex items-center gap-2 border px-3 py-2 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
+            className="slug inline-flex items-center gap-2 rounded-[var(--r-chip)] border px-3 py-2 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
             style={{ borderColor: "var(--edge)", color: "var(--grey-hi)" }}
           >
             <RotateCcw size={12} /> Reset
@@ -419,7 +419,7 @@ function BlockEditor({
             type="button"
             onClick={submit}
             disabled={save.isPending}
-            className="slug inline-flex items-center gap-2 border px-3 py-2 transition-colors disabled:opacity-40"
+            className="slug inline-flex items-center gap-2 rounded-[var(--r-chip)] border px-3 py-2 transition-colors disabled:opacity-40"
             style={{
               borderColor: "var(--edge-hi)",
               color: "var(--white)",
@@ -569,7 +569,7 @@ function Moderation() {
 
   return (
     <div
-      className="border p-5 md:p-6"
+      className="rounded-[var(--r-card)] border p-5 md:p-6"
       style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
     >
       <h2 className="display text-[1.3rem]" style={{ color: "var(--white)" }}>
@@ -606,7 +606,7 @@ function Moderation() {
               <button
                 type="button"
                 onClick={() => moderate.mutate({ id: row.id, hidden: !row.hidden })}
-                className="slug inline-flex shrink-0 items-center gap-2 border px-3 py-2 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
+                className="slug inline-flex shrink-0 items-center gap-2 rounded-[var(--r-chip)] border px-3 py-2 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
                 style={{ borderColor: "var(--edge)", color: "var(--grey-hi)" }}
               >
                 {row.hidden ? <Eye size={12} /> : <EyeOff size={12} />}
@@ -663,7 +663,7 @@ export default function Studio() {
           <div className="flex items-center gap-2">
             <Link
               to="/"
-              className="slug inline-flex items-center gap-2 border px-3 py-2 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
+              className="slug inline-flex items-center gap-2 rounded-[var(--r-chip)] border px-3 py-2 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
               style={{ borderColor: "var(--edge)", color: "var(--grey-hi)" }}
             >
               <ArrowLeft size={12} /> Site
@@ -674,7 +674,7 @@ export default function Studio() {
                 clearAdminToken();
                 setSignedIn(false);
               }}
-              className="slug inline-flex items-center gap-2 border px-3 py-2 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
+              className="slug inline-flex items-center gap-2 rounded-[var(--r-chip)] border px-3 py-2 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
               style={{ borderColor: "var(--edge)", color: "var(--grey-hi)" }}
             >
               <LogOut size={12} /> Sign out
@@ -688,7 +688,7 @@ export default function Studio() {
               key={name}
               type="button"
               onClick={() => setPage(name)}
-              className="slug border px-3 py-2 transition-colors"
+              className="slug rounded-[var(--r-chip)] border px-3 py-2 transition-colors"
               style={{
                 borderColor: page === name ? "var(--edge-hi)" : "var(--edge)",
                 color: page === name ? "var(--white)" : "var(--grey)",

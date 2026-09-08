@@ -47,7 +47,7 @@ export function Guestbook() {
     color: "var(--white)",
   };
   const inputClass =
-    "mt-2 w-full border px-3 py-2.5 font-mono text-sm outline-none transition-colors focus:border-[var(--edge-hi)]";
+    "mt-2 w-full rounded-[var(--r-chip)] border px-3 py-2.5 font-mono text-sm outline-none transition-colors focus:border-[var(--edge-hi)]";
 
   return (
     <Section
@@ -62,7 +62,7 @@ export function Guestbook() {
           <Reveal>
             <form
               onSubmit={submit}
-              className="border p-5 md:p-6"
+              className="rounded-[var(--r-card)] border p-5 md:p-6"
               style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
             >
               <label className="slug block" htmlFor="gb-name">
@@ -111,7 +111,7 @@ export function Guestbook() {
                 disabled={
                   sign.isPending || !name.trim() || message.trim().length < 2
                 }
-                className="slug mt-6 flex w-full items-center justify-center gap-2 border px-4 py-3 transition-colors disabled:opacity-40"
+                className="slug mt-6 flex w-full items-center justify-center gap-2 rounded-[var(--r-chip)] border px-4 py-3 transition-colors disabled:opacity-40"
                 style={{
                   borderColor: "var(--edge-hi)",
                   color: "var(--white)",
@@ -159,7 +159,7 @@ export function Guestbook() {
           ) : !entries.data?.length ? (
             <Reveal>
               <div
-                className="flex h-full min-h-[12rem] items-center justify-center border p-8 text-center"
+                className="flex h-full min-h-[12rem] items-center justify-center rounded-[var(--r-card)] border p-8 text-center"
                 style={{ borderColor: "var(--edge)" }}
               >
                 <p className="italic" style={{ color: "var(--grey-hi)" }}>

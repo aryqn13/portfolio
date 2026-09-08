@@ -9,7 +9,7 @@ export const inputStyle = {
 };
 
 export const inputClass =
-  "w-full border px-3 py-2 font-mono text-[13px] outline-none transition-colors focus:border-[var(--edge-hi)]";
+  "w-full rounded-[var(--r-chip)] border px-3 py-2 font-mono text-[13px] outline-none transition-colors focus:border-[var(--edge-hi)]";
 
 export function Field({
   label,
@@ -197,7 +197,7 @@ export function RecordList({
       {rows.map((row, index) => (
         <div
           key={index}
-          className="border p-4"
+          className="rounded-[var(--r-card)] border p-4"
           style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
         >
           <div className="mb-3 flex items-center justify-between gap-3">
@@ -278,7 +278,7 @@ export function IconBtn({
       aria-label={label}
       title={label}
       onClick={onClick}
-      className="flex h-6 w-6 items-center justify-center border transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
+      className="flex h-6 w-6 items-center justify-center rounded-[var(--r-chip)] border transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
       style={{ borderColor: "var(--edge)", color: "var(--grey)" }}
     >
       {children}
@@ -297,7 +297,7 @@ export function GhostBtn({
     <button
       type="button"
       onClick={onClick}
-      className="slug inline-flex items-center gap-2 border px-3 py-2 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
+      className="slug inline-flex items-center gap-2 rounded-[var(--r-chip)] border px-3 py-2 transition-colors hover:!border-[var(--edge-hi)] hover:!text-white"
       style={{ borderColor: "var(--edge)", color: "var(--grey-hi)" }}
     >
       {children}

@@ -30,17 +30,21 @@ function PosterSkeleton() {
   );
 }
 
-/** Greyscale at rest, colour on hover. Same rule as the portrait. */
+/* Colour at rest. The chrome is monochrome so the images do the talking, and
+   a poster held at zero saturation was the loudest reason the site read as
+   black and white. The hover reward is no longer "colour appears" but "the
+   image leans forward": a touch more saturation and light. */
+const REST_FILTER = "contrast(1.02) saturate(1.02)";
+const HOVER_FILTER = "contrast(1.06) saturate(1.14) brightness(1.06)";
+
 const posterHover = {
   onMouseEnter: (e: React.MouseEvent<HTMLImageElement>) => {
-    e.currentTarget.style.filter = "grayscale(0) contrast(1.02)";
+    e.currentTarget.style.filter = HOVER_FILTER;
   },
   onMouseLeave: (e: React.MouseEvent<HTMLImageElement>) => {
-    e.currentTarget.style.filter = "grayscale(1) contrast(1.06) brightness(0.95)";
+    e.currentTarget.style.filter = REST_FILTER;
   },
 };
-
-const REST_FILTER = "grayscale(1) contrast(1.06) brightness(0.95)";
 
 export function Films() {
   const films = useFilms();
@@ -76,7 +80,7 @@ export function Films() {
                 href={film.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex h-full flex-col border p-5 transition-colors duration-500"
+                className="group flex h-full flex-col rounded-[var(--r-card)] border p-5 transition-colors duration-500"
                 style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = "var(--edge-hi)";
@@ -90,7 +94,7 @@ export function Films() {
                     src={film.poster}
                     alt={film.title}
                     loading="lazy"
-                    className="mb-4 aspect-[16/10] w-full object-cover transition-[filter] duration-700"
+                    className="mb-4 aspect-[16/10] w-full rounded-[var(--r-img)] object-cover transition-[filter] duration-700"
                     style={{ filter: REST_FILTER, border: "1px solid var(--edge)" }}
                     {...posterHover}
                   />
@@ -138,7 +142,7 @@ export function Films() {
           </div>
         ) : !list.length ? (
           <div
-            className="mt-5 flex items-center gap-3 border p-6"
+            className="mt-5 flex items-center gap-3 rounded-[var(--r-card)] border p-6"
             style={{ borderColor: "var(--edge)" }}
           >
             <FilmIcon size={16} style={{ color: "var(--grey)" }} />
@@ -164,7 +168,7 @@ export function Films() {
                   href={hero.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="group mt-5 grid gap-6 border p-5 transition-colors duration-500 md:grid-cols-12 md:p-7"
+                  className="group mt-5 grid gap-6 rounded-[var(--r-card)] border p-5 transition-colors duration-500 md:grid-cols-12 md:p-7"
                   style={{
                     borderColor: "var(--edge)",
                     background: "var(--ink-2)",
@@ -182,7 +186,7 @@ export function Films() {
                         src={hero.poster}
                         alt={hero.title}
                         loading="lazy"
-                        className="w-full max-w-[220px] transition-[filter] duration-700"
+                        className="w-full max-w-[220px] rounded-[var(--r-img)] transition-[filter] duration-700"
                         style={{
                           border: "1px solid var(--edge)",
                           filter: REST_FILTER,
@@ -256,13 +260,13 @@ export function Films() {
                     }
                     className="group block"
                   >
-                    <div className="relative overflow-hidden">
+                    <div className="relative overflow-hidden rounded-[var(--r-img)]">
                       {film.poster ? (
                         <img
                           src={film.poster}
                           alt={film.title}
                           loading="lazy"
-                          className="aspect-[2/3] w-full object-cover transition-[filter] duration-700"
+                          className="aspect-[2/3] w-full rounded-[var(--r-img)] object-cover transition-[filter] duration-700"
                           style={{
                             border: "1px solid var(--edge)",
                             filter: REST_FILTER,

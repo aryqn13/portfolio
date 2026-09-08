@@ -29,7 +29,7 @@ export function Music() {
                 href={card.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex h-full flex-col justify-between border p-6 transition-colors duration-500 md:p-8"
+                className="group flex h-full flex-col justify-between rounded-[var(--r-card)] border p-6 transition-colors duration-500 md:p-8"
                 style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = "var(--edge-hi)";

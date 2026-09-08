@@ -79,7 +79,7 @@ export function Contributions() {
   return (
     <Reveal>
       <div
-        className="border p-5 md:p-7"
+        className="rounded-[var(--r-card)] border p-5 md:p-7"
         style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
       >
         <div className="flex flex-wrap items-baseline justify-between gap-4">

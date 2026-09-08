@@ -68,7 +68,7 @@ export function Lightbox({
         type="button"
         aria-label="Close"
         onClick={onClose}
-        className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center border transition-colors sm:top-6 sm:right-6"
+        className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-[var(--r-chip)] border transition-colors sm:top-6 sm:right-6"
         style={{ borderColor: "var(--edge-hi)", color: "var(--silver)" }}
       >
         <X size={16} />
@@ -83,7 +83,7 @@ export function Lightbox({
               e.stopPropagation();
               step(-1);
             }}
-            className="absolute left-2 flex h-10 w-10 items-center justify-center border transition-colors sm:left-6"
+            className="absolute left-2 flex h-10 w-10 items-center justify-center rounded-[var(--r-chip)] border transition-colors sm:left-6"
             style={{ borderColor: "var(--edge-hi)", color: "var(--silver)" }}
           >
             <ChevronLeft size={16} />
@@ -95,7 +95,7 @@ export function Lightbox({
               e.stopPropagation();
               step(1);
             }}
-            className="absolute right-2 flex h-10 w-10 items-center justify-center border transition-colors sm:right-6"
+            className="absolute right-2 flex h-10 w-10 items-center justify-center rounded-[var(--r-chip)] border transition-colors sm:right-6"
             style={{ borderColor: "var(--edge-hi)", color: "var(--silver)" }}
           >
             <ChevronRight size={16} />
@@ -107,7 +107,7 @@ export function Lightbox({
         src={shot.src}
         alt={shot.caption ?? ""}
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[78vh] max-w-full border object-contain"
+        className="max-h-[78vh] max-w-full rounded-[var(--r-img)] border object-contain"
         style={{ borderColor: "var(--edge)" }}
       />
 

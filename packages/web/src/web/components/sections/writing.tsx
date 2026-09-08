@@ -30,7 +30,7 @@ export function Writing() {
                 href={entry.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group relative flex h-full min-h-[22rem] flex-col justify-between overflow-hidden border p-7 transition-colors duration-500 md:p-9"
+                className="group relative flex h-full min-h-[22rem] flex-col justify-between overflow-hidden rounded-[var(--r-card)] border p-7 transition-colors duration-500 md:p-9"
                 style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = "var(--edge-hi)";

@@ -101,7 +101,7 @@ export function ResumeEditor({
         {rows.map((row, index) => (
           <div
             key={index}
-            className="border p-4"
+            className="rounded-[var(--r-card)] border p-4"
             style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
           >
             <div className="mb-3 flex items-center justify-between gap-3">
@@ -154,7 +154,7 @@ export function ResumeEditor({
                   setTarget(index);
                   input.current?.click();
                 }}
-                className="slug inline-flex items-center gap-2 border px-3 py-2 transition-colors disabled:opacity-40 hover:!border-[var(--edge-hi)] hover:!text-white"
+                className="slug inline-flex items-center gap-2 rounded-[var(--r-chip)] border px-3 py-2 transition-colors disabled:opacity-40 hover:!border-[var(--edge-hi)] hover:!text-white"
                 style={{ borderColor: "var(--edge)", color: "var(--grey-hi)" }}
               >
                 {busy && target === index ? (

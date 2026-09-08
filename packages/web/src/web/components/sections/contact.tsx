@@ -74,7 +74,7 @@ export function Contact() {
                 href={main.href}
                 target="_blank"
                 rel="noreferrer"
-                className="group mt-4 flex items-center justify-between gap-4 border p-5 transition-colors duration-500"
+                className="group mt-4 flex items-center justify-between gap-4 rounded-[var(--r-card)] border p-5 transition-colors duration-500"
                 style={{
                   background: "var(--ink-2)",
                   borderColor: "var(--edge)",

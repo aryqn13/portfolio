@@ -30,7 +30,10 @@ export function Section({
       <Reveal>
         <div className="mb-10 md:mb-14">
           <div className="flex items-baseline gap-4">
-            <span className="slug" style={{ color: "var(--silver)" }}>
+            {/* The index is the one repeating wayfinding mark on every page, so
+                it is where the accent earns its keep: a neon pulse down the
+                left edge of the whole site for almost no surface area. */}
+            <span className="slug" style={{ color: "var(--mark)" }}>
               {reel}
             </span>
             <span className="slug">{slug}</span>
@@ -60,7 +63,7 @@ export function Section({
 export function Tag({ children }: { children: ReactNode }) {
   return (
     <span
-      className="slug rounded-[2px] border px-2 py-1"
+      className="slug rounded-[var(--r-chip)] border px-2 py-1"
       style={{ color: "var(--grey-hi)", borderColor: "var(--edge)" }}
     >
       {children}
