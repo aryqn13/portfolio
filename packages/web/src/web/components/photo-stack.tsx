@@ -7,6 +7,7 @@ import {
 } from "motion/react";
 import type { PanInfo } from "motion/react";
 import type { Photo } from "../config/content";
+import { DitherOverlay } from "./dither/dither-image";
 
 /**
  * A deck of prints. The top one is loose in the hand: it follows the cursor
@@ -221,12 +222,27 @@ function Card({
               // The card is already cut to this photograph's proportions, so
               // filling it crops nothing and leaves no empty bands.
               objectPosition: "center",
+              // Colour at rest. His photographs are the point; holding them at
+              // zero saturation until you happen to hover was throwing them
+              // away. Hover now lifts rather than reveals.
               filter:
                 hover && isTop
-                  ? "grayscale(0) contrast(1.02) saturate(1.05)"
-                  : "grayscale(1) contrast(1.08) brightness(0.94)",
+                  ? "contrast(1.05) saturate(1.14) brightness(1.04)"
+                  : "contrast(1.02) saturate(1.02)",
             }}
           />
+
+          {/* A whisper of dither over the photograph, enough to tie it to the
+              site's texture without touching the face. It fades out entirely on
+              hover, alongside the greyscale, so the clean photo is what you get
+              when you actually look at it. */}
+          {/* Only the top card gets one. The cards behind it show a few
+              millimetres of edge, and each overlay is a full CPU dither pass,
+              so dithering the whole deck paid four times over for texture
+              nobody can see. A promoted card runs its own pass on promotion. */}
+          {isTop ? (
+            <DitherOverlay src={photo.src} opacity={hover ? 0 : 0.12} />
+          ) : null}
         </button>
       </motion.div>
     </motion.div>

@@ -3,25 +3,31 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ─── Monochrome. No hue anywhere, contrast does all the work. ─── */
+/* ─── Neon on a wet street. The ink family carries a blue-violet cast so the
+   greys read as night rather than as a dev default, and one neon accent does
+   the pointing. Roughly 60 ink / 30 type and surfaces / 10 neon, with the
+   remaining colour coming from imagery, which now sits in full colour at rest.
+   See design.md. ─── */
 :root {
   --black: #000000;
-  --ink: #060606;
-  --ink-2: #0c0c0c;
-  --ink-3: #131313;
-  --ink-4: #1c1c1c;
-  --edge: #262626;
-  --edge-hi: #3a3a3a;
-  --grey: #6f6f6f;
-  --grey-hi: #8f8f8f;
-  --silver: #b4b4b4;
-  --white: #fafafa;
+  --ink: #07060b;
+  --ink-2: #0d0b13;
+  --ink-3: #141119;
+  --ink-4: #1e1a26;
+  --edge: #2a2434;
+  --edge-hi: #423a52;
+  --grey: #7a7288;
+  --grey-hi: #9c93ab;
+  --silver: #cfc7d9;
+  --white: #faf7fd;
 
-  /* The single sanctioned break from monochrome. Used only to mark key
-     phrases in prose and to light up an icon on hover. Never for surfaces,
-     never for borders, never decoratively. See design.md. */
-  --mark: #5b8cff;
-  --mark-dim: #3f6bd6;
+  /* The accent. Neon magenta, a Fallen Angels nod. It carries links, marks,
+     active states, key CTAs and the dither field. Never a large fill: it is
+     the 10, not the 60. --mark on --ink is ~6.1:1, fine for links and large
+     text; --mark-hi for hover, --mark-dim for rules and low-key edges. */
+  --mark: #ff2e9a;
+  --mark-hi: #ff5cb0;
+  --mark-dim: #b81f6f;
 
   /* Corner radii. The system used to be near-square (2px) on purpose. It now
      carries a small, consistent curve so cards and image tiles feel less like
@@ -73,6 +79,8 @@
   --color-silver: var(--silver);
   --color-white: var(--white);
   --color-mark: var(--mark);
+  --color-mark-hi: var(--mark-hi);
+  --color-mark-dim: var(--mark-dim);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -124,7 +132,7 @@
   }
 
   ::selection {
-    background: var(--white);
+    background: var(--mark);
     color: var(--ink);
   }
 
@@ -223,6 +231,8 @@
   .link-underline {
     position: relative;
   }
+  /* The underline is the accent, not the text colour. A link stays quiet until
+     you reach for it, then answers in neon. */
   .link-underline::after {
     content: "";
     position: absolute;
@@ -230,7 +240,7 @@
     bottom: -2px;
     width: 100%;
     height: 1px;
-    background: currentColor;
+    background: var(--mark);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
