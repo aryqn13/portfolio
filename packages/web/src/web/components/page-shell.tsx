@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
 import { Nav } from "./nav";
 import { Enter } from "./reveal";
+import { DitherPanel } from "./dither/dither-panel";
 import { FooterSocials } from "./sections/previews";
 import { pages } from "../config/content";
 import { useContent } from "../context/content";
@@ -32,7 +33,14 @@ export function PageShell({ index, label, title, lead, children }: PageShellProp
 
       <main className="relative mx-auto w-full max-w-[1120px] px-5 pb-10 sm:px-8 xl:px-0">
         {title ? (
-          <header className="pt-32 pb-4 md:pt-40">
+          <header className="relative isolate pt-32 pb-4 md:pt-40">
+            {/*
+              Same treatment as the home page's opening, so every page starts on
+              the same field and the body of the page stays quiet. This is the
+              whole rule: the dither marks openings, nothing else.
+            */}
+            <DitherPanel className="top-[10%] h-[150%] -z-10" />
+
             <Enter>
               <div className="flex items-baseline gap-4">
                 <span className="slug" style={{ color: "var(--silver)" }}>
@@ -59,7 +67,17 @@ export function PageShell({ index, label, title, lead, children }: PageShellProp
           </header>
         ) : null}
 
-        {children}
+        {/*
+          The header above is a positioned box (`relative isolate`) so its
+          dither plate can bleed past its own bottom edge. Positioned boxes
+          paint after plain, non-positioned siblings in the same stacking
+          context regardless of DOM order, so without this wrapper the plate
+          painted on top of whatever came right after the header — burying
+          the start of Contributions on /work. Giving this an explicit
+          z-index (not `auto`, which is what the header has) puts it back on
+          top, above the bleed, on every page.
+        */}
+        <div className="relative z-10">{children}</div>
 
         {/* Next page, so the site reads as a sequence rather than a menu. */}
         <Link

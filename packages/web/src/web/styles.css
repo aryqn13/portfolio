@@ -176,14 +176,19 @@
   }
 
 
-  /* Heavier grain than usual, this is the only texture in the system. */
+  /* Grain carries the texture everywhere the dither does not, which is now most
+     of the page: the dither is bounded to each page's opening plate. So this
+     sits between its two previous values. It was 0.075 when it was the only
+     texture in the system, then 0.022 while a full screen dither covered
+     everything and two competing noise fields read as mud. At 0.05 it holds the
+     flat areas together without fighting the plate it overlaps. */
   .grain::before {
     content: "";
     position: fixed;
     inset: -60%;
     z-index: 60;
     pointer-events: none;
-    opacity: 0.075;
+    opacity: 0.05;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
     animation: grain-shift 6s steps(5) infinite;
   }
