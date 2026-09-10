@@ -159,6 +159,16 @@
     color: var(--grey);
   }
 
+  /* Desktop nav links. They sit right next to the wordmark, so they borrow
+     its family instead of the mono tag treatment used for wayfinding labels
+     elsewhere — a third typeface at that distance read as a mismatch. */
+  .nav-link {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.94rem;
+    letter-spacing: -0.01em;
+  }
+
   .display {
     font-family: var(--font-display);
     font-weight: 700;
