@@ -419,8 +419,9 @@ export const defaultContent: SiteContent = {
 
 export const pages = [
   { path: "/", label: "Home", index: "01" },
-  { path: "/work", label: "Work", index: "02" },
-  { path: "/interests", label: "Interests", index: "03" },
-  { path: "/writing", label: "Writing", index: "04" },
-  { path: "/elsewhere", label: "Elsewhere", index: "05" },
+  { path: "/about", label: "About", index: "02" },
+  { path: "/work", label: "Work", index: "03" },
+  { path: "/interests", label: "Interests", index: "04" },
+  { path: "/writing", label: "Writing", index: "05" },
+  { path: "/elsewhere", label: "Elsewhere", index: "06" },
 ];

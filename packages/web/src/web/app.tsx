@@ -1,5 +1,6 @@
 import { Route, Switch } from "wouter";
 import Home from "./pages/home";
+import AboutPage from "./pages/about";
 import WorkPage from "./pages/work";
 import InterestsPage from "./pages/interests";
 import WritingPage from "./pages/writing";
@@ -17,6 +18,7 @@ function App() {
         <ScrollTop />
         <Switch>
           <Route path="/" component={Home} />
+          <Route path="/about" component={AboutPage} />
           <Route path="/work" component={WorkPage} />
           <Route path="/interests" component={InterestsPage} />
           <Route path="/writing" component={WritingPage} />
