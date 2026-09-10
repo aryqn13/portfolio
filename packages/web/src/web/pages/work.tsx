@@ -7,7 +7,7 @@ import { Contributions } from "../components/contributions";
 export default function WorkPage() {
   return (
     <PageShell
-      index="02"
+      index="03"
       label="Work"
       title="Work"
       lead="Growth systems, the software under them, and the projects I built to stop treating concepts as magic words."

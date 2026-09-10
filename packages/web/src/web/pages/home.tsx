@@ -25,9 +25,10 @@ export default function Home() {
   useCountVisit();
   const views = useViews();
   const { profile } = useContent();
-  /* Work has its own preview block above, so the index carries the rest. */
+  /* Work and About each have their own preview block above, so the index
+     carries only what has no preview yet. */
   const rest = pages.filter(
-    (page) => page.path !== "/" && page.path !== "/work",
+    (page) => page.path !== "/" && page.path !== "/work" && page.path !== "/about",
   );
 
   return (
@@ -56,7 +57,7 @@ export default function Home() {
             {rest.map((page, i) => (
               <li key={page.path}>
                 <Reveal delay={i * 0.05}>
-                  <div className="border-b py-6" style={{ borderColor: "var(--edge)" }}>
+                  <div className="border-b py-5" style={{ borderColor: "var(--edge)" }}>
                     {/* -my-2 py-2 min-h-10 keeps the tap target at 40px on a
                         phone without changing the desktop rhythm. */}
                     <Link

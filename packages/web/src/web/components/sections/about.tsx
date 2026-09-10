@@ -1,85 +1,57 @@
+import { Link } from "wouter";
+import { ArrowRight } from "lucide-react";
 import { Section } from "../section";
 import { Reveal } from "../reveal";
 import { Marked } from "../marked";
 import { useContent } from "../../context/content";
 
+/**
+ * HOME TEASER.
+ *
+ * This used to be the full bio plus an Education card plus a Footnotes card,
+ * which made the home page the longest thing on the site before anyone had
+ * reached the actual work. It is one paragraph now — the opening line of the
+ * bio, unedited — and a link to /about for whoever wants the rest. Education
+ * and the full bio live there; Footnotes is gone outright; nobody asked what
+ * a "footnote" on a portfolio was for.
+ */
 export function About() {
-  const { bio, quickFacts, education, profile } = useContent();
+  const { bio, profile } = useContent();
 
   return (
     <Section
       id="about"
       reel="02"
       slug="About"
-      title="The long version."
+      title="The short version."
       lead={profile.tagline}
     >
-      <div className="grid gap-12 lg:grid-cols-12">
-        <div className="lg:col-span-8">
-          <div className="prose-serif space-y-6">
-            {bio.map((paragraph, i) => (
-              <Reveal key={paragraph.slice(0, 24)} delay={i * 0.04}>
-                <p
-                  className={
-                    i === 0
-                      ? "text-[1.24rem] leading-[1.62]"
-                      : "text-[1.06rem] leading-[1.72]"
-                  }
-                  style={{ color: i === 0 ? "var(--white)" : "var(--silver)" }}
-                >
-                  <Marked>{paragraph}</Marked>
-                </p>
-              </Reveal>
-            ))}
-          </div>
+      <Reveal>
+        <div className="prose-serif">
+          <p
+            className="text-[1.24rem] leading-[1.62]"
+            style={{ color: "var(--white)" }}
+          >
+            <Marked>{bio[0]}</Marked>
+          </p>
         </div>
+      </Reveal>
 
-        <aside className="lg:col-span-4">
-          <Reveal delay={0.1}>
-            <div
-              className="border p-5"
-              style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
-            >
-              <span className="slug" style={{ color: "var(--white)" }}>
-                Education
-              </span>
-              <p className="display mt-3 text-lg" style={{ color: "var(--white)" }}>
-                {education.degree}
-              </p>
-              <p className="mt-2 text-sm" style={{ color: "var(--silver)" }}>
-                {education.school}
-              </p>
-              <p className="mt-1 text-sm" style={{ color: "var(--grey-hi)" }}>
-                {education.detail}
-              </p>
-              <p className="slug mt-3">{education.period}</p>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.16}>
-            <div
-              className="mt-px border p-5"
-              style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
-            >
-              <span className="slug" style={{ color: "var(--white)" }}>
-                Footnotes
-              </span>
-              <ul className="mt-3 space-y-2.5">
-                {quickFacts.map((fact) => (
-                  <li
-                    key={fact}
-                    className="flex gap-3 text-sm"
-                    style={{ color: "var(--silver)" }}
-                  >
-                    <span style={{ color: "var(--grey)" }}>/</span>
-                    {fact}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-        </aside>
-      </div>
+      <Reveal delay={0.06}>
+        <div className="mt-6">
+          <Link
+            to="/about"
+            className="slug group -my-2 inline-flex min-h-10 items-center gap-2 py-2 transition-colors hover:!text-white"
+            style={{ color: "var(--grey-hi)" }}
+          >
+            The long version
+            <ArrowRight
+              size={12}
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </Link>
+        </div>
+      </Reveal>
     </Section>
   );
 }

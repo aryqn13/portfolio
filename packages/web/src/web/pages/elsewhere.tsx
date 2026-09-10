@@ -6,7 +6,7 @@ import { Contact } from "../components/sections/contact";
 export default function ElsewherePage() {
   return (
     <PageShell
-      index="05"
+      index="06"
       label="Elsewhere"
       title="Elsewhere"
       lead="Every account worth having, plus a guestbook nobody asked for and the fastest way to reach me."
