@@ -1,11 +1,13 @@
 import { Link } from "wouter";
+import type { CSSProperties } from "react";
 import { ArrowRight, Mail as MailIcon } from "lucide-react";
 import { Section } from "../section";
 import { Reveal } from "../reveal";
 import { Marked } from "../marked";
-import { SkillGrid } from "./skills-grid";
+import { SkillTile } from "./skills-grid";
 import { useContent } from "../../context/content";
 import { resolveIcon } from "../../config/social-icons";
+import { KIND_LABEL, groupByCompany } from "../../lib/experience";
 
 /**
  * HOME PAGE PREVIEWS.
@@ -15,12 +17,6 @@ import { resolveIcon } from "../../config/social-icons";
  * and lighter strips for Interests, Writing and Elsewhere, which only need to
  * prove they exist and are worth a click.
  */
-
-const KIND_LABEL: Record<string, string> = {
-  growth: "Growth",
-  engineering: "Engineering",
-  community: "Community",
-};
 
 /** A quiet text link with a moving arrow. Used at the foot of each preview. */
 function More({ to, children }: { to: string; children: string }) {
@@ -39,12 +35,59 @@ function More({ to, children }: { to: string; children: string }) {
   );
 }
 
+/** One label plus one self-scrolling row of tags. The list is duplicated
+    back to back and the track animates exactly -50%, so the loop has no
+    seam and no pause to wait out — it is doing something the instant the
+    page settles, which a static grid of tags never did. Speed scales with
+    how many tags are in it, so a short list does not sprint and a long one
+    does not crawl. */
+function MarqueeRow({
+  label,
+  items,
+  reverse,
+}: {
+  label: string;
+  items: string[];
+  reverse?: boolean;
+}) {
+  const duration = Math.max(18, items.length * 2.8);
+
+  return (
+    <div>
+      <span className="slug" style={{ color: "var(--grey-hi)" }}>
+        {label}
+      </span>
+      <div className="marquee-edge mt-3 overflow-hidden">
+        <div
+          className={`marquee-track flex w-max gap-2 py-0.5 ${
+            reverse ? "marquee-track-reverse" : ""
+          }`}
+          style={{ "--marquee-duration": `${duration}s` } as CSSProperties}
+        >
+          {[...items, ...items].map((item, i) => (
+            <SkillTile key={`${item}-${i}`} name={item} compact />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /**
- * Capability, understood at a glance. The complaint this answers: reading two
- * paragraphs of prose does not tell you what someone can actually operate.
+ * Capability, felt rather than read. A static grid of every tag was either
+ * an inventory (too long, the original complaint) or an inventory with a
+ * "+N more" escape hatch bolted on (worse). This is one full-width card, the
+ * same footprint as the Work preview list below it, split into the two
+ * halves of the job side by side on a desktop (stacked on a phone). Each
+ * half keeps moving on its own — the full list for that half, scrolling in
+ * opposite directions — so it proves range by simply not stopping, without
+ * needing to run every tag past the eye at once. The full, static toolkit
+ * still lives on /work for anyone who wants to read it standing still.
  */
 export function SkillsPreview() {
   const { skills } = useContent();
+  const growthItems = skills.growth.groups.flatMap((g) => g.items);
+  const engineeringItems = skills.engineering.groups.flatMap((g) => g.items);
 
   return (
     <Section
@@ -53,11 +96,28 @@ export function SkillsPreview() {
       slug="Capability"
       title="What I actually operate."
       lead="Two halves of one job. The growth side has no logos to borrow, so it gets drawn ones."
+      className="py-12 md:py-16"
     >
-      <div className="grid gap-px md:grid-cols-2">
-        <SkillGrid column={skills.growth} delay={0} compact />
-        <SkillGrid column={skills.engineering} delay={0.06} compact />
-      </div>
+      <Reveal>
+        <div
+          className="group relative grid gap-6 rounded-[var(--r-card)] border p-5 sm:p-7 md:grid-cols-2 md:gap-8"
+          style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
+        >
+          <MarqueeRow label="Growth & GTM" items={growthItems} />
+          <div className="hairline md:hidden" />
+          <div
+            className="hidden md:absolute md:inset-y-7 md:left-1/2 md:block md:w-px"
+            style={{ background: "var(--edge)" }}
+          />
+          <MarqueeRow label="Engineering" items={engineeringItems} />
+        </div>
+      </Reveal>
+
+      <Reveal delay={0.08}>
+        <div className="mt-5">
+          <More to="/work#stack">The full toolkit</More>
+        </div>
+      </Reveal>
     </Section>
   );
 }
@@ -65,7 +125,12 @@ export function SkillsPreview() {
 /** The full preview: recent roles, then the projects, then the way through. */
 export function WorkPreview() {
   const { experience, projects } = useContent();
-  const recent = experience.slice(0, 3);
+  // Two companies, not two rows off a flat list — a raw slice(0, 2) printed
+  // "Runable" twice, once for each of its two roles, before this grouped by
+  // company and kept only the newest role per group, matching /work.
+  const recent = groupByCompany(experience)
+    .slice(0, 2)
+    .map((group) => group.jobs[0]);
 
   return (
     <Section
@@ -74,6 +139,7 @@ export function WorkPreview() {
       slug="Work"
       title="Where the hours went."
       lead="Growth on one side, engineering on the other, and a stretch of community work that turned out to be the same skill in different clothes."
+      className="py-12 md:py-16"
     >
       <ol className="border-t" style={{ borderColor: "var(--edge)" }}>
         {recent.map((job, i) => (
@@ -99,9 +165,13 @@ export function WorkPreview() {
                   </h3>
                   {job.current ? (
                     <span
-                      className="slug px-1.5 py-0.5"
-                      style={{ background: "var(--ink-4)", color: "var(--white)" }}
+                      className="slug flex items-center gap-1.5"
+                      style={{ color: "var(--mark)" }}
                     >
+                      <span
+                        className="h-1.5 w-1.5 rounded-full"
+                        style={{ background: "var(--mark)" }}
+                      />
                       Now
                     </span>
                   ) : null}
@@ -134,7 +204,7 @@ export function WorkPreview() {
             {projects.map((project) => (
               <div
                 key={project.name}
-                className="border p-4"
+                className="rounded-[var(--r-card)] border p-4"
                 style={{ borderColor: "var(--edge)", background: "var(--ink-2)" }}
               >
                 <p
@@ -179,14 +249,14 @@ export function PagePreview({ path }: { path: string }) {
             <span
               key={film.title}
               title={`${film.title} (${film.year}), ${film.director}`}
-              className="block h-16 w-[2.7rem] shrink-0 overflow-hidden border"
+              className="block h-16 w-[2.7rem] shrink-0 overflow-hidden rounded-[var(--r-tile)] border"
               style={{ borderColor: "var(--edge)", background: "var(--ink-3)" }}
             >
               <img
                 src={film.poster}
                 alt={film.title}
                 loading="lazy"
-                className="h-full w-full object-cover opacity-80 grayscale transition duration-500 hover:opacity-100 hover:grayscale-0"
+                className="h-full w-full object-cover opacity-90 transition duration-500 hover:opacity-100"
               />
             </span>
           ))}

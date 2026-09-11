@@ -270,6 +270,46 @@
     background-repeat: repeat-x;
     height: 1px;
   }
+
+  /* Self-scrolling skill row on the home page. The track holds the tag
+     list twice back to back; animating exactly -50% moves it one full set
+     and lands back on an identical frame, so the loop has no seam. Fades at
+     both edges via mask instead of a hard clip, so a tag never looks cut
+     off mid-glyph. */
+  .marquee-edge {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+  }
+  .marquee-track {
+    animation: marquee-scroll var(--marquee-duration, 26s) linear infinite;
+  }
+  .marquee-track-reverse {
+    animation-direction: reverse;
+  }
+  .group:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes grain-shift {
@@ -296,6 +336,9 @@
     scroll-behavior: auto;
   }
   .grain::before {
+    animation: none;
+  }
+  .marquee-track {
     animation: none;
   }
 }
