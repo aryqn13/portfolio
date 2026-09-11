@@ -224,13 +224,17 @@
     );
   }
 
-  .glow {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(130px);
-    pointer-events: none;
-    z-index: 0;
-    background: rgba(255, 255, 255, 0.045);
+  /* The floating nav island. Not a full-bleed bar — a rounded glass card
+     that sits clear of the viewport edge with the page visible around it.
+     Real backdrop-blur plus a translucent, slightly warm-dark fill (matching
+     --ink-3, not plain black) and a hairline border, so it reads as frosted
+     glass over the page rather than a flat panel. */
+  .glass-nav {
+    background: rgba(13, 11, 19, 0.58);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(250, 247, 253, 0.09);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
   .hairline {
