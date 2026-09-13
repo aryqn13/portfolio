@@ -10,7 +10,14 @@ const root = path.resolve(__dirname, "../..");
 
 export default defineConfig(({ mode }) => {
 	const env = loadEnv(mode, root, '');
-	Object.assign(process.env, env);
+	// NODE_ENV is Vite's own to set (production for `vite build`, development
+	// for `vite dev`) — the root .env carries a NODE_ENV meant for the bun
+	// server's runtime, and blindly copying it here would downgrade every
+	// production build to a development React bundle (Strict Mode's double-
+	// invoked effects included). Every other root env var still passes through
+	// untouched.
+	const { NODE_ENV: _serverNodeEnv, ...buildEnv } = env;
+	Object.assign(process.env, buildEnv);
 
 	return {
 		// All env files live at the repo root — keep Vite's own env loading there too,

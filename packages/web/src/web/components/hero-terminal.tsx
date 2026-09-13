@@ -33,12 +33,6 @@ function useTyped(text: string, start: boolean, done: () => void, reduced: boole
   const startedRef = useRef(false);
 
   useEffect(() => {
-    console.log("[mount-debug]", text, "mounted");
-    return () => console.log("[mount-debug]", text, "unmounted");
-  }, [text]);
-
-  useEffect(() => {
-    console.log("[typed-debug] effect fired", { text, start, reduced, started: startedRef.current });
     if (reduced) {
       setValue(text);
       return;
@@ -51,7 +45,6 @@ function useTyped(text: string, start: boolean, done: () => void, reduced: boole
       for (let i = 1; i <= text.length; i += 1) {
         if (!alive) return;
         setValue(text.slice(0, i));
-        console.log("[typed-debug] set", text.slice(0, i));
         await new Promise((r) => window.setTimeout(r, CHAR_MS));
       }
       if (alive) done();
