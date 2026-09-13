@@ -5,6 +5,7 @@ import { useContent } from "../../context/content";
 import { resolveIcon } from "../../config/social-icons";
 import { PhotoStack } from "../photo-stack";
 import { DitherPanel } from "../dither/dither-panel";
+import { HeroTerminal } from "../hero-terminal";
 
 export function Hero() {
   const { profile, positioning, socials, resumes, photos } = useContent();
@@ -41,25 +42,11 @@ export function Hero() {
           </Enter>
 
           <Enter delay={0.08}>
-            <h1
-              className="display-tight mt-7 text-[clamp(3.4rem,12vw,8.2rem)]"
-              style={{ color: "var(--white)" }}
-            >
-              {profile.name}
-            </h1>
-          </Enter>
-
-          <Enter delay={0.16}>
-            <p
-              className="mt-6 max-w-[54ch] text-[clamp(1.15rem,2.4vw,1.6rem)] leading-[1.45]"
-              style={{ color: "var(--silver)" }}
-            >
-              {positioning.map((line) => (
-                <span key={line} className="block">
-                  {line}
-                </span>
-              ))}
-            </p>
+            <HeroTerminal
+              name={profile.name}
+              positioning={positioning}
+              className="mt-7"
+            />
           </Enter>
         </div>
 

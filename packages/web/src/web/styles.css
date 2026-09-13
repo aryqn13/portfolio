@@ -305,6 +305,11 @@
   .group:hover .marquee-track {
     animation-play-state: paused;
   }
+
+  /* Block cursor for the hero terminal's idle prompt line. */
+  .term-cursor {
+    animation: term-blink 1s step-end infinite;
+  }
 }
 
 @keyframes marquee-scroll {
@@ -313,6 +318,17 @@
   }
   to {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes term-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
   }
 }
 
@@ -343,6 +359,9 @@
     animation: none;
   }
   .marquee-track {
+    animation: none;
+  }
+  .term-cursor {
     animation: none;
   }
 }
