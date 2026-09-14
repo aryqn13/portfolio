@@ -7,7 +7,6 @@ import { DitherPanel } from "./dither/dither-panel";
 import { FooterSocials } from "./sections/previews";
 import { pages } from "../config/content";
 import { useContent } from "../context/content";
-import { useCountVisit, useViews } from "../queries/guestbook";
 
 interface PageShellProps {
   /** Page index, matches the nav. */
@@ -20,8 +19,6 @@ interface PageShellProps {
 }
 
 export function PageShell({ index, label, title, lead, children }: PageShellProps) {
-  useCountVisit();
-  const views = useViews();
   const { profile } = useContent();
 
   const position = pages.findIndex((p) => p.label === label);
@@ -117,18 +114,13 @@ export function PageShell({ index, label, title, lead, children }: PageShellProp
 
           <FooterSocials />
 
-          <div className="flex items-center gap-5">
-            <a
-              href={`mailto:${profile.email}`}
-              className="slug link-underline -my-2 inline-flex min-h-10 items-center py-2 normal-case"
-              style={{ color: "var(--silver)" }}
-            >
-              {profile.email}
-            </a>
-            <span className="slug">
-              {views.data?.views ? `${views.data.views} views` : ""}
-            </span>
-          </div>
+          <a
+            href={`mailto:${profile.email}`}
+            className="slug link-underline -my-2 inline-flex min-h-10 items-center py-2 normal-case"
+            style={{ color: "var(--silver)" }}
+          >
+            {profile.email}
+          </a>
         </footer>
       </main>
     </div>

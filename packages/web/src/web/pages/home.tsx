@@ -12,7 +12,6 @@ import {
 import { Reveal } from "../components/reveal";
 import { pages } from "../config/content";
 import { useContent } from "../context/content";
-import { useCountVisit, useViews } from "../queries/guestbook";
 
 /**
  * The home page carries the whole story: opening, the short bio, what I can
@@ -22,8 +21,6 @@ import { useCountVisit, useViews } from "../queries/guestbook";
  * The only page without a contributions graph, by design.
  */
 export default function Home() {
-  useCountVisit();
-  const views = useViews();
   const { profile } = useContent();
   /* Work and About each have their own preview block above, so the index
      carries only what has no preview yet. */
@@ -104,18 +101,13 @@ export default function Home() {
 
           <FooterSocials />
 
-          <div className="flex items-center gap-5">
-            <a
-              href={`mailto:${profile.email}`}
-              className="slug link-underline -my-2 inline-flex min-h-10 items-center py-2 normal-case"
-              style={{ color: "var(--silver)" }}
-            >
-              {profile.email}
-            </a>
-            <span className="slug">
-              {views.data?.views ? `${views.data.views} views` : ""}
-            </span>
-          </div>
+          <a
+            href={`mailto:${profile.email}`}
+            className="slug link-underline -my-2 inline-flex min-h-10 items-center py-2 normal-case"
+            style={{ color: "var(--silver)" }}
+          >
+            {profile.email}
+          </a>
         </footer>
       </main>
     </div>
